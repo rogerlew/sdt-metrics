@@ -1,3 +1,4 @@
+# -*- coding: cp1252 -*-
 from __future__ import print_function
 
 # Copyright (c) 2012, Roger Lew [see LICENSE.txt]
@@ -107,6 +108,7 @@ best to briefly discuss those gotchas here.
 ##
 
 def _correction(v, N):
+    """protects input to ltqnorm"""
     # used to protect input to ltqnorm
     # v is assumed to be a probability between 0 and 1
     if v > 0. and v < 1.:
@@ -121,6 +123,7 @@ def _correction(v, N):
         return 1.-1./(2.*N)
 
 def _isint(x):
+    """returns True if x is an int, False otherwise"""
     try:
         int(x)
         return True
@@ -310,10 +313,10 @@ class SDT(dict):
         """returns list of event type count pairs"""
         return [(k,self[k]) for k in self]
                 
-    def __missing__(self, key):
-        """The count of elements not in the SDT is zero."""
-        # Needed so that self[missing_item] does not raise KeyError
-        return 0
+##    def __missing__(self, key):
+##        """The count of elements not in the SDT is zero."""
+##        # Needed so that self[missing_item] does not raise KeyError
+##        return 0
 
     # Override dict methods where necessary
     @classmethod
@@ -324,8 +327,7 @@ class SDT(dict):
             'SDT.fromkeys() is undefined.  Use SDT(iterable) instead.')
 
     def setdefault(self, key, value):
-        raise NotImplementedError(
-            'SDT.setdefault() is undefined.')
+        raise NotImplementedError('SDT.setdefault() is undefined.')
     
     def __call__(self, event):
         """adds event to object
@@ -379,13 +381,15 @@ class SDT(dict):
                 self[elem] = 0
 
     def __setitem__(self, key, value):
+        """sdt.__setitem(key) <==> sdt[key]"""
         if key not in self.keys():
             raise KeyError(key)
         else:
             super(SDT, self).__setitem__(key, value)
 
     def subtract(self, iterable=None, **kwds):
-        """Like dict.update() but subtracts counts instead of replacing them.
+        """
+        Like dict.update() but subtracts counts instead of replacing them.
         Counts can be reduced below zero.  Both the inputs and outputs are
         allowed to contain zero and negative counts.
 
@@ -508,23 +512,71 @@ class SDT(dict):
             else            : return self.pFA
             
     def aprime(self):
-        """aprime"""
+        """
+        A': Non-parametric measure of sensitivity
+
+          Devised by Pollack and Norman (1964) [1]_ but was reformalated and
+          popularized by Grier (1971) [2]_.
+
+          [1] Pollack, I., Norman, D. A. (1964). A non-parametric analysis
+              of recognition experiemnts. Psychonomic Sicence 1, 125-126.
+
+          [2] Grier, J. B. (1971). Nonparametric indexes for sensitivity and
+              bias: Computing formulas. Psychological Bulletin, 75, 424-429.
+            
+
+          
+        """
         global HI,FA
         return _aprime(self.p(HI),self.p(FA))
     
     def amzs(self):
-        """amzs"""
+        """
+        A: Zhang and Mueller's ROC-Based Measure of Sensitivity
+
+          Smith (1995) [1]_ remedied a common confusion with A' a suggested an
+          improved measure A''. Zhang and Mueller (2005) [2]_ found that Smith
+          had a mathematical error and properly formulated a new nonparametric
+          measure of sensitivity. They called this measure A. Here it is
+          called amzs.        
+
+          [1] Zhang, J., and Mueller, S. T. (2005). A note on roc analysis
+              and non-parametric estimate of sensitivity. Psychometrika, 70,
+              145-154.
+          
+          [2] Smith, W. D. (1995). Clarification of Sensitivity Measure A'.
+              Journal of Mathematical Psychology 39, 82-89.
+        """
         global HI,FA
         return _amzs(self.p(HI),self.p(FA))
 
     def bpp(self):
-        """bpp"""
+        """
+        b'': Grier (1971) measure of response bias
+
+          [1] Grier, J. B. (1971). Nonparametric indexes for sensitivity and
+              bias: Computing formulas. Psychological Bulletin, 75, 424-429.
+        """
         global HI,FA
         
         return _bpp(self.p(HI),self.p(FA))
         
     def bppd(self):
-        """bppd"""
+        """
+        beta''d: nonparametric measure of response bias
+
+          First developed by Donaldson (1992) [1]_. See, Warm, Dember, and
+          Howe, (1997) [2]_ compared several nonparmetric measures of
+          response bias and endorse this measure when the parametric
+          assumptions of c do not hold.
+
+          [1] Donaldson, W. (1992). Measuring recognition memory. Journal of
+              Experimental Psychology: General, 121, 275–277.
+
+          [2] See, J. E., Warm, J. S., Dember, W. N., and Howe, S. R. (1997).
+              Vigilance and signal detection theory: An empirical evaluation
+              of five measures of response bias.
+        """
         global HI,FA
         
         pHI,pFA = self.p(HI),self.p(FA)
@@ -535,12 +587,21 @@ class SDT(dict):
         return num / dem
     
     def bmz(self):
-        """bmz"""
+        """
+        b: Zhang and Mueller's measure of decision bias
+        
+          [1] Zhang, J., and Mueller, S. T. (2005). A note on roc analysis
+              and non-parametric estimate of sensitivity. Psychometrika, 70,
+              145-154.
+        """
+        
         global HI,FA
         return _bmz(self.p(HI),self.p(FA))
 
     def B(self):
-        """B"""
+        """
+        B: 0.5*p(HI) + 0.5p(FA)
+        """
         global HI,FA
         return 0.5*self.p(HI) + 0.5*self.p(FA)
     
@@ -549,14 +610,39 @@ class SDT(dict):
         return math.log10(self.bmz())
     
     def dprime(self):
-        """dprime"""
+        """
+        d': parametric measure of sensitivity
+
+          Extremely popular measure adapted by from communication
+          engineering by psychologists in the 1950s [1]_. Most notable text
+          is Green and Swets (1966) [2]_. Calculation uses the formula given
+          by Macmillan (1993) [3]_.
+
+          [1] Szalma, J. L., and Hancock, P. A. Signal detection theory. Class
+              Lecture Notes. http://bit.ly/KIyKkt
+
+          [2] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
+              theory and psychophysics, reprint edition. Los Altos, CA:
+              Penisula Publihing.
+
+          [3] Macmillan, N. A. (1993). Signal detection theory as data analysis
+              method and psychological decision model. In G. Keren & C. Lewis
+              (Eds.), A handbook for data analysis in the behavioral sciences:
+              Methodological issues (pp. 21-57). Hillsdale, NJ: Erlbaum.
+        """
         global HI,FA
         N = self.count()
         return ltqnorm(_correction(self.p(HI),N)) - \
                ltqnorm(_correction(self.p(FA),N))
     
     def beta(self):
-        """beta"""
+        """
+        beta: classic parametric measure of response bias.
+        
+          [1] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
+              theory and psychophysics, reprint edition. Los Altos, CA:
+              Penisula Publihing.
+        """
         global HI,FA
 
         N = self.count()
@@ -569,19 +655,52 @@ class SDT(dict):
         return math.log10(self.beta())
 
     def c(self):
-        """c"""
+        """
+        c: parametric measure of response bias
+
+          Generally recommended as a better measure than beta [1]_, [2]_,
+          [3]_. First reason being that d' and c are independent [4]_.
+          Forumula from Macmillan (1993) [5]_. 
+
+          [1] Banks W. P. (1970). Signal detection theory and human memory.
+              Psychological Bulletin, 74, 81-99.
+
+          [2] Macmillan, N. A., and Creelman, C. D. (1990). Response bias:
+              Characteristics of detection theory, threshold theory, and
+              “nonparametric” indexes. Psychological Bulletin, 107, 401-413.
+
+          [3] Snodgrass, J. G., and Corwin, J. (1988). Pragmatics of
+              measuring recognition memory: Applications to dementia and
+              amnesia. Journal of Experimental Psychology: General, 117, 34-50.
+
+          [4] Ingham, J. G. (1970). Individual differences in signal detection.
+              Acta Psychologica, 34, 39-50.
+          
+          [5] Macmillan, N. A. (1993). Signal detection theory as data analysis
+              method and psychological decision model. In G. Keren and C. Lewis
+              (Eds.), A handbook for data analysis in the behavioral sciences:
+              Methodological issues (pp. 21-57). Hillsdale, NJ: Erlbaum.
+        """
         global HI,FA
         N = self.count()
         return -1.*(.5*ltqnorm(_correction(self.p(HI),N)) + \
                     .5*ltqnorm(_correction(self.p(FA),N)))
         
     def accuracy(self):
-        """accuracy"""
+        """
+        accuracy: (1.+p(HI) - p(FA)) / 2.
+        """
         global HI,FA
         return (1.+self.p(HI)-self.p(FA))/2.
     
     def mcc(self):
-        """mcc"""
+        """
+        Matthews correlation coefficient
+
+          [1] Matthews, B.W. (1975). Comparison of the predicted and observed
+              secondary structure of T4 phage lysozyme. Biochim. Biophys. Acta,
+              405, 442-451.
+        """
         global HI,FA,CR,MI
         pHI,pFA,pCR,pMI = self.p(HI),self.p(FA),self.p(CR),self.p(MI)
         num = pHI * pCR - pFA * pMI
@@ -592,11 +711,19 @@ class SDT(dict):
         return num / dem
     
     def precision(self):
-        """precision"""
+        """
+        precision
+
+          sdt.precision() <==> sdt.ppv()
+        """
         return self.ppv()
     
     def recall(self):
-        """recall"""
+        """
+        recall
+
+          sdt.recall() <==> sdt.sensitivity()
+        """
         return self.sensitivity()
     
     def f1(self):
@@ -609,7 +736,11 @@ class SDT(dict):
         return num/dem
             
     def ppv(self):
-        """positive predictive value"""
+        """
+        positive predictive value: TP / (TP + FP)
+        
+          sdt.precision() <==> sdt.ppv()
+        """
         if not self._directmode:
             raise NotImplementedError('use "direct" method')
         
@@ -622,7 +753,9 @@ class SDT(dict):
         return num / float(dem)
     
     def npv(self):
-        """negative predictive value"""
+        """
+        negative predictive value: TN / (TN + FN)
+        """
         if not self._directmode:
             raise NotImplementedError('use "direct" method')
         
@@ -635,7 +768,9 @@ class SDT(dict):
         return num / float(dem)
     
     def fdr(self):
-        """false discovery rate"""
+        """
+        false discovery rate: FP / (TP + FP)
+        """
         if not self._directmode:
             raise NotImplementedError('use "direct" method')
         
@@ -648,7 +783,11 @@ class SDT(dict):
         return num / float(dem)
 
     def sensitivity(self):
-        """sensitivity"""
+        """
+        sensitivity: TP / (TP + FN)
+        
+          sdt.recall() <==> sdt.sensitivity()
+        """
         if not self._directmode:
             raise NotImplementedError('use "direct" method')
         
@@ -661,7 +800,9 @@ class SDT(dict):
         return num / float(dem)
 
     def specificity(self):
-        """sensitivity"""
+        """
+        specificity: TN / (TN + FP)
+        """
         if not self._directmode:
             raise NotImplementedError('use "direct" method')
         
@@ -675,7 +816,48 @@ class SDT(dict):
         
     def mutual_info(self):
         # http://www.cs.ubc.ca/~murphyk/Teaching/CS340-Fall07/reading/rocHandout.pdf
-        """mutual information"""
+        """
+        mutual information
+
+          Alternative metric to compare classifiers suggested by Wallach
+          (2006) [1]_ and discussed by Murphy (2007) [2]_.
+
+          Consider the following confusion matrices for classifiers A, B, and C.
+          The prevalance rate is 90%.
+
+          ::
+
+                      A          B          C
+                 ---------- ---------- ----------
+                   1    0     1    0     1    0
+              --+----------+----------+----------+----------+
+              1 | 90   10  | 80     0 | 78     0 | HI    MI |
+              0 |  0    0  | 10    10 | 12    10 | FA    CR |
+              --+----------+----------+----------+----------+
+
+          The above classifiers yield:
+
+            Measure               A       B       C
+            ================== ======= ======= =======
+            d'                  0.000   2.576   2.462
+            Accuracy            0.900   0.900   0.880
+            Precision           0.900   1.000   1.000
+            Recall              1.000   0.888   0.867
+            F-score             0.947   0.941   0.929
+            Mutual information  0.000   0.187   0.174
+            ================== ======= ======= =======
+
+            Intuition suggests B > C > A but only d' and mutual information
+            reflect this relationship. Mutual information is slightly more
+            sensitive ([1]_ and [2]_ do discuss d').
+        
+          [1] Wallach. H. (2006) Evaluation metrics for hard classi?ers.
+              Technical report, Cavendish Lab.,Univ. Cambridge.
+
+          [2] Murphy, K. P. (2007). Performance evaluation of binary
+              classifiers. http://bit.ly/LzD5m0        
+        """
+        
         if not self._directmode:
             raise NotImplementedError('use "direct" method')
 
@@ -767,11 +949,13 @@ class _vmethod(object):
 
         if add_prob_method:
             self.prob = lambda *args: _prob(self, *args)
-            self.prob.__doc__ = 'Calculates metric based on hit rate and false alarm rate'
+            self.prob.__doc__ = 'Calculates metric based on hit '\
+                                'rate and false alarm rate'
 
     def direct(self, *args):
         """
-        Calculates metric based on hit, miss, correct rejection, and false alarm counts
+        Calculates metric based on hit, miss, correct
+        rejection, and false alarm counts
         """
         global _S
         
