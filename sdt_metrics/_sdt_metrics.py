@@ -1,26 +1,34 @@
-# -*- coding: cp1252 -*-
 from __future__ import print_function
+from __future__ import division
 
 # Copyright (c) 2012, Roger Lew [see LICENSE.txt]
 
-### Python 2 to 3 workarounds
-##import sys
-##if sys.version_info[0] == 2:
-##    _strobj = basestring
-##    _xrange = xrange
-##elif sys.version_info[0] == 3:
-##    _strobj = str
-##    _xrange = range
-
+# Python 2 to 3 workarounds
+import sys
+if sys.version_info[0] == 2:
+    _strobj = basestring
+    _xrange = xrange
+elif sys.version_info[0] == 3:
+    _strobj = str
+    _xrange = range
+    
 from _abcoll import Mapping
 import math
 
-# Courtesy of Gary Robinson, in public domain
-from sdt_metrics.support.singletonmixin import Singleton 
+from sdt_metrics.support.singletonmixin import Singleton
 
 HI,MI,CR,FA = TP,FP,TN,FN = 'HI','MI','CR','FA'
 
 """
+Acknowledgements
+=================
+
+  - SDT class scaffolded from Raymond Hettinger's Counter
+    class in the collections module of the standard library
+
+  - singletonmixin module is courtesy of Gary Robinson and is
+    in public domain
+
 Implementation Notes
 ====================
 
@@ -42,7 +50,10 @@ best to briefly discuss those gotchas here.
     When dprime.prob, beta.prob, and c.prob are passed 0 or 1
     probabilities an Exception is raised in _correction
 
- 2. Some of the metrics (aprime, amzs, bmz, bpp) have symmetry about the
+    the loglinear_dprime, loglinear_beta, and loglinear_c methods
+    use a different correction suggested by Hautus (1995).
+
+ 2. Some of the metrics (aprime, amzs, and bmz) have symmetry about the
     diagonal in ROC space where p(HI) == p(FA). Their implemenations are
     easier with recursion. These recurive metrics are implemented
     outside of the SDT class (_aprime, _amzs, _bmz, _bpp) and have
@@ -111,16 +122,14 @@ def _correction(v, N):
     """protects input to ltqnorm"""
     # used to protect input to ltqnorm
     # v is assumed to be a probability between 0 and 1
-    if v > 0. and v < 1.:
+    if 0 < v < 1:
         return v
-    elif v <= 0.:
-        if N is None:
-            raise Exception('DomainError: v should be >= 0 and <= 1')
-        return 1./(2.*N)
-    elif v >= 1.: 
-        if N is None:
-            raise Exception('DomainError: v should be >= 0 and <= 1')
-        return 1.-1./(2.*N)
+    elif N is None or v < 0 or v >1:
+        print(v,N)
+        raise ValueError('v should be >= 0 and <= 1')
+
+    # at this point we know v must be 0 or 1 and N is not None
+    return (1/(2*N), 1-1/(2*N))[int(v)]
 
 def _isint(x):
     """returns True if x is an int, False otherwise"""
@@ -204,49 +213,49 @@ def ltqnorm( p ):
 
 def _aprime(pHI,pFA):
     """recursive private function for calculating A'"""
-    pCR = 1. - pFA
+    pCR = 1 - pFA
 
     # use recursion to handle
     # cases below the diagonal defined by pHI == pFA
     if pFA > pHI:
-        return 1. - _aprime(1.-pHI,1.-pFA)
+        return 1 - _aprime(1-pHI ,1-pFA)
 
     # Pollack and Norman's (1964) A' measure
     # formula from Grier 1971
-    if pHI == 0. or pFA == 1.:
+    if pHI == 0 or pFA == 1:
         # in both of these cases pHI == pFA
         return .5
 
-    return .5 + (pHI - pFA)*(1. + pHI - pFA)/(4.*pHI*(1. - pFA))
+    return .5 + (pHI - pFA)*(1 + pHI - pFA)/(4*pHI*(1 - pFA))
 
 def _amzs(pHI,pFA):
     """recursive private function for calculating A_{MZS}"""
 
     # catch boundary cases
-    if pHI == pFA == 0. or pHI == pFA == 1.:
+    if pHI == pFA == 0 or pHI == pFA == 1:
         return .5
     
     # use recursion to handle
     # cases below the diagonal defined by pHI == pFA
     if pFA > pHI:
-        return 1. - _amzs(1.-pHI,1.-pFA)
+        return 1 - _amzs(1-pHI, 1-pFA)
     
     # upper left quadrant
     # Mueller, Zhang (2006)
     if   pFA <= .5 <= pHI:
-        return .75 + (pHI-pFA)/4. - pFA*(1.-pHI)
+        return .75 + (pHI-pFA)/4 - pFA*(1-pHI)
     # cases above the diagonal defined by pHI == pFA
     # and not in the upper left quadrant
-    elif pHI <= (1.-pFA):
+    elif pHI <= (1-pFA):
         if pHI == 0:
-            return (3. + pHI - pFA)/4.
+            return (3 + pHI - pFA)/4
         else:
-            return (3. + pHI - pFA - pFA/pHI)/4.
+            return (3 + pHI - pFA - pFA/pHI)/4
     else:
-        if pFA == 1.:            
-            return (3. + pHI - pFA)/4.
+        if pFA == 1:            
+            return (3 + pHI - pFA)/4
         else:
-            return (3. + pHI - pFA - (1.-pHI)/(1.-pFA))/4.
+            return (3 + pHI - pFA - (1-pHI)/(1-pFA))/4
 
 def _bmz(pHI,pFA):
     """recursive private function for calculating A_{MZS}"""
@@ -254,36 +263,31 @@ def _bmz(pHI,pFA):
     # use recursion to handle
     # cases below the diagonal defined by pHI == pFA
     if pFA > pHI:
-        return _bmz(1.-pHI,1.-pFA)
+        return _bmz(1-pHI, 1-pFA)
 
     if   pFA <= .5 <= pHI:
         return (5-4*pHI)/(1+4*pFA)
     elif pFA < pHI < .5:
         return (pHI**2+pHI)/(pHI**2+pFA)
-    elif 0.5 < pFA < pHI:
+    elif .5 < pFA < pHI:
         return ((1-pFA)**2+(1-pHI))/((1-pFA)**2+(1-pFA))
     else: # pHI == pFA
         return 1.
     
-def _bpp(pHI,pFA):
-    """recursive private function for calculating beta'' (Grier)"""
-    if pHI >= pFA:
-        num = pHI*(1.-pHI) - pFA*(1.-pFA)
-        dem = pHI*(1.-pHI) + pFA*(1.-pFA)
-    else:
-        num = pFA*(1.-pFA) - pHI*(1.-pHI)
-        dem = pFA*(1.-pFA) + pHI*(1.-pHI)
-
-    if dem == 0:
-        return 0
-    else:
-        return num/dem
-
+    
 ##
 ## SDT Class
 ##    
 class SDT(dict):
+    """
+    A class for storing signal detection data
+
+       Class is intended to be used a datastructure for keeping
+       track of signal detection data. It also supports the
+       the general functions of sdt_metrics.
+    """
     # class is modelled from collections.Counter
+    global HI,MI,CR,FA,TP,FP,TN,FN
     
     def __init__(self, iterable=None, **kwds):
         """Create a new, empty SDT object.  And if given, count elements
@@ -300,12 +304,10 @@ class SDT(dict):
 
     def keys(self):
         """returns list of event types"""
-        global HI,MI,CR,FA
         return [HI,MI,CR,FA]
 
     def __iter__(self):
         """iterates over event types"""
-        global HI,MI,CR,FA
         for k in [HI,MI,CR,FA]:
             yield k
 
@@ -313,10 +315,10 @@ class SDT(dict):
         """returns list of event type count pairs"""
         return [(k,self[k]) for k in self]
                 
-##    def __missing__(self, key):
-##        """The count of elements not in the SDT is zero."""
-##        # Needed so that self[missing_item] does not raise KeyError
-##        return 0
+    def __missing__(self, key):
+        """The count of elements not in the SDT is zero."""
+        # Needed so that self[missing_item] does not raise KeyError
+        return 0
 
     # Override dict methods where necessary
     @classmethod
@@ -333,7 +335,7 @@ class SDT(dict):
         """adds event to object
 
            D = SDT()
-           D(HI) <==> D.update([HI]) <==> D[HI]+=1
+           ``D(HI) <==> D.update([HI]) <==> D[HI]+=1``
         """
         if event not in self.keys():
             raise KeyError(event)
@@ -381,7 +383,7 @@ class SDT(dict):
                 self[elem] = 0
 
     def __setitem__(self, key, value):
-        """sdt.__setitem(key) <==> sdt[key]"""
+        """``sdt.__setitem(key) <==> sdt[key]``"""
         if key not in self.keys():
             raise KeyError(key)
         else:
@@ -505,109 +507,184 @@ class SDT(dict):
             elif elem == MI : return self[MI]/float(self[HI] + self[MI])
             elif elem == CR : return self[CR]/float(self[CR] + self[FA])
             else            : return self[FA]/float(self[CR] + self[FA])
-        else:
+
+        # this branch is only used by the _vmethod.probs
+        else: 
             if   elem == HI : return self.pHI
-            elif elem == MI : return 1.-self.pHI
-            elif elem == CR : return 1.-self.pFA
+            elif elem == MI : return 1-self.pHI
+            elif elem == CR : return 1-self.pFA
             else            : return self.pFA
             
     def aprime(self):
         """
         A': Non-parametric measure of sensitivity
 
-          Devised by Pollack and Norman (1964) [1]_ but was reformalated and
-          popularized by Grier (1971) [2]_.
+          Devised by Pollack and Norman [1]_ but was reformalated and
+          popularized by Grier [2]_. Smith [3]_ provides a nice
+          historical overview, literature review, and analysis of A'.
 
-          [1] Pollack, I., Norman, D. A. (1964). A non-parametric analysis
-              of recognition experiemnts. Psychonomic Sicence 1, 125-126.
+          .. seealso:: :py:meth:`amzs`
 
-          [2] Grier, J. B. (1971). Nonparametric indexes for sensitivity and
-              bias: Computing formulas. Psychological Bulletin, 75, 424-429.
-            
+          .. [1] Pollack, I., Norman, D. A. (1964). A non-parametric analysis
+                 of recognition experiemnts. Psychonomic Sicence 1, 125-126.
 
-          
+          .. [2] Grier, J. B. (1971). Nonparametric indexes for sensitivity and
+                 bias: Computing formulas. Psychological Bulletin, 75, 424-429.
+
+          .. [3] Smith, W. D. (1995). Clarification of Sensitivity Measure A'.
+                 Journal of Mathematical Psychology 39, 82-89.        
         """
-        global HI,FA
-        return _aprime(self.p(HI),self.p(FA))
+        return _aprime(self.p(HI), self.p(FA))
     
     def amzs(self):
         """
         A: Zhang and Mueller's ROC-Based Measure of Sensitivity
 
-          Smith (1995) [1]_ remedied a common confusion with A' a suggested an
-          improved measure A''. Zhang and Mueller (2005) [2]_ found that Smith
-          had a mathematical error and properly formulated a new nonparametric
-          measure of sensitivity. They called this measure A. Here it is
-          called amzs.        
+          Smith [1]_ remedied a common confusion with A' a suggested an
+          improved measure A'' (not implemented). Zhang and Mueller [2]_ found
+          that Smith had a mathematical error and properly formulated a new
+          nonparametric measure of sensitivity. They called this measure A.
+          Here it is called :py:meth:`amzs` in honor of Mueller, Zhang and Smith.        
 
-          [1] Zhang, J., and Mueller, S. T. (2005). A note on roc analysis
-              and non-parametric estimate of sensitivity. Psychometrika, 70,
-              145-154.
+          .. seealso:: :py:meth:`aprime`
           
-          [2] Smith, W. D. (1995). Clarification of Sensitivity Measure A'.
-              Journal of Mathematical Psychology 39, 82-89.
+          .. [1] Zhang, J., and Mueller, S. T. (2005). A note on roc analysis
+                 and non-parametric estimate of sensitivity. Psychometrika, 70,
+                 145-154.
+          
+          .. [2] Smith, W. D. (1995). Clarification of Sensitivity Measure A'.
+                 Journal of Mathematical Psychology 39, 82-89.
         """
-        global HI,FA
         return _amzs(self.p(HI),self.p(FA))
 
     def bpp(self):
         """
-        b'': Grier (1971) measure of response bias
+        b'': Grier [1]_ nonparametric measure of response bias
 
-          [1] Grier, J. B. (1971). Nonparametric indexes for sensitivity and
-              bias: Computing formulas. Psychological Bulletin, 75, 424-429.
+          .. seealso::
+             :py:meth:`bppd`
+             :py:meth:`loglinear_bppd`
+          
+          .. [1] Grier, J. B. (1971). Nonparametric indexes for sensitivity and
+                 bias: Computing formulas. Psychological Bulletin, 75, 424-429.
         """
-        global HI,FA
+        pHI,pFA = self.p(HI),self.p(FA)
+        if pHI >= pFA:
+            num = pHI*(1-pHI) - pFA*(1-pFA)
+            dem = pHI*(1-pHI) + pFA*(1-pFA)
+        else:
+            num = pFA*(1-pFA) - pHI*(1-pHI)
+            dem = pFA*(1-pFA) + pHI*(1-pHI)
+
+        if dem == 0:
+            return 0.
+        else:
+            return num/dem
         
-        return _bpp(self.p(HI),self.p(FA))
-        
+    def bph(self):
+        """
+        B'H: nonparametric measure of response bias
+
+          Developed by Hodos [1]_. See, Warm, Dember, and Howe, [2]_ compared
+          several nonparmetric measures of response bias and found bppd to
+          be empirically better.
+
+          .. seealso:: :py:meth:`bppd`
+          
+          .. [1] Hodos, W. (1970). A nonparametric index of response bias for
+                 use in detection and recognition experiments. Psychological
+                 Bulletin, 74, 351-354.
+
+          .. [2] See, J. E., Warm, J. S., Dember, W. N., and Howe, S. R. (1997).
+                 Vigilance and signal detection theory: An empirical evaluation
+                 of five measures of response bias.
+        """
+        pHI,pFA = self.p(HI),self.p(FA)
+        if pHI <= 1 - pFA:
+            num = pFA*(1-pFA)
+            dem = pHI*(1-pHI)
+
+            if dem == 0:
+                return 1.
+            else:
+                return 1. - num/dem
+        else:
+            num = pHI*(1-pHI)
+            dem = pFA*(1-pFA)
+
+            if dem == 0:
+                return -1.
+            else:
+                return num/dem - 1.
+            
     def bppd(self):
         """
-        beta''d: nonparametric measure of response bias
+        B''d: nonparametric measure of response bias
 
-          First developed by Donaldson (1992) [1]_. See, Warm, Dember, and
-          Howe, (1997) [2]_ compared several nonparmetric measures of
-          response bias and endorse this measure when the parametric
-          assumptions of c do not hold.
+          First developed by Donaldson [1]_. See, Warm, Dember, and
+          Howe, [2]_ compared several nonparmetric measures of
+          response bias and endorse this measure when the assumption of a
+          gaussian noise distribution does not hold.
 
-          [1] Donaldson, W. (1992). Measuring recognition memory. Journal of
-              Experimental Psychology: General, 121, 275–277.
+          .. seealso:: :py:meth:`loglinear_bppd`
+          
+          .. [1] Donaldson, W. (1992). Measuring recognition memory. Journal of
+                 Experimental Psychology: General, 121, 275277.
 
-          [2] See, J. E., Warm, J. S., Dember, W. N., and Howe, S. R. (1997).
-              Vigilance and signal detection theory: An empirical evaluation
-              of five measures of response bias.
+          .. [2] See, J. E., Warm, J. S., Dember, W. N., and Howe, S. R. (1997).
+                 Vigilance and signal detection theory: An empirical evaluation
+                 of five measures of response bias.
         """
-        global HI,FA
-        
         pHI,pFA = self.p(HI),self.p(FA)
         num = ((1.-pHI)*(1.-pFA)-pHI*pFA)
         dem = ((1.-pHI)*(1.-pFA)+pHI*pFA)
         if dem == 0:
             return 0.
+            
         return num / dem
-    
+
+    def loglinear_bppd(self):
+        """
+        loglinear B''d: nonparametric measure of response bias
+
+          Applies Hautus's [1]_ loglinear transformation to counts
+          before calculating bppd.
+
+          .. note:: This metric cannot be calculated from probabilities
+
+          .. seealso:: :py:meth:`bppd`
+              
+          .. [1] Hautus, M. (1995). Corrections for extreme proportions and
+                 their biasing effects on estimated values of d'. Behavior
+                 Research Methods, Instruments, and Computers, 27, 46-51.
+
+        """
+        pHI = (self[HI] + 0.5)/(self[HI] + self[MI] + 1)
+        pFA = (self[FA] + 0.5)/(self[CR] + self[FA] + 1)
+        
+        num = ((1.-pHI)*(1.-pFA)-pHI*pFA)
+        dem = ((1.-pHI)*(1.-pFA)+pHI*pFA)
+
+        return num / dem
+        
     def bmz(self):
         """
-        b: Zhang and Mueller's measure of decision bias
+        b: Zhang and Mueller's [1]_ measure of decision bias
         
-          [1] Zhang, J., and Mueller, S. T. (2005). A note on roc analysis
-              and non-parametric estimate of sensitivity. Psychometrika, 70,
-              145-154.
+          .. [1] Zhang, J., and Mueller, S. T. (2005). A note on roc analysis
+                 and non-parametric estimate of sensitivity. Psychometrika, 70,
+                 145-154.
         """
-        
-        global HI,FA
         return _bmz(self.p(HI),self.p(FA))
 
-    def B(self):
+    def b(self):
         """
         B: 0.5*p(HI) + 0.5p(FA)
+
+          Bar-Napkin measure of Response Bias.
+          Implemented for comparitive purposes.
         """
-        global HI,FA
         return 0.5*self.p(HI) + 0.5*self.p(FA)
-    
-    def logbmz(self):
-        """logbmz"""
-        return math.log10(self.bmz())
     
     def dprime(self):
         """
@@ -615,93 +692,208 @@ class SDT(dict):
 
           Extremely popular measure adapted by from communication
           engineering by psychologists in the 1950s [1]_. Most notable text
-          is Green and Swets (1966) [2]_. Calculation uses the formula given
-          by Macmillan (1993) [3]_.
+          is Green and Swets  [2]_. Calculation uses the formula given
+          by Macmillan [3]_. Extreme probabilities of 0 and 1 are
+          treated using the correction suggested by Macmillan and Kaplan
+          [4]_. Rates of 0 are replaced with 1/n and rates of 1 are
+          replaced wtih 1 - 1/n. This approach has been shown to be biased
+          (Miller [5]_). Hautus's [6]_ loglinear approach may
+          be preferred. For a more extensive overview on treating extreme values
+          see Stanislaw and Todorov [7]_. 
 
-          [1] Szalma, J. L., and Hancock, P. A. Signal detection theory. Class
-              Lecture Notes. http://bit.ly/KIyKkt
+          .. seealso:: :py:meth:`loglinear_dprime`
+          
+          .. [1] Szalma, J. L., and Hancock, P. A. Signal detection theory. Class
+                 Lecture Notes. http://bit.ly/KIyKkt
 
-          [2] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
-              theory and psychophysics, reprint edition. Los Altos, CA:
-              Penisula Publihing.
+          .. [2] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
+                 theory and psychophysics, reprint edition. Los Altos, CA:
+                 Penisula Publihing.
 
-          [3] Macmillan, N. A. (1993). Signal detection theory as data analysis
-              method and psychological decision model. In G. Keren & C. Lewis
-              (Eds.), A handbook for data analysis in the behavioral sciences:
-              Methodological issues (pp. 21-57). Hillsdale, NJ: Erlbaum.
+          .. [3] Macmillan, N. A. (1993). Signal detection theory as data analysis
+                 method and psychological decision model. In G. Keren & C. Lewis
+                 (Eds.), A handbook for data analysis in the behavioral sciences:
+                 Methodological issues (pp. 21-57). Hillsdale, NJ: Erlbaum.
+
+          .. [4] Macmillan, N. A., and Kaplan, H. L. (1985). Detection theory
+                 analysis of group data: Estimating sensitivity from average hit
+                 and false-alarm rates. Psychological Bulletin, 98, 185-199.
+
+          .. [5] Miller, J. (1996). The sampling distribution of d'. Perception
+                 and Psychophysics, 58, 65-72.
+              
+          .. [6] Hautus, M. (1995). Corrections for extreme proportions and
+                 their biasing effects on estimated values of d'. Behavior
+                 Research Methods, Instruments, and Computers, 27, 46-51.
+
+          .. [7] Stanislaw H. and Todorov N. (1999). Calculation of signal
+                 detection theory measures. Behavorial Research Methods,
+                 Instruments, and Computers, 31 (1), 137-149.
         """
-        global HI,FA
         N = self.count()
         return ltqnorm(_correction(self.p(HI),N)) - \
                ltqnorm(_correction(self.p(FA),N))
+
+    def loglinear_dprime(self):
+        """
+        loglinear d': parametric measure of sensitivity
+
+          Applies Hautus's [1]_ loglinear transformation to counts
+          before calculating dprime. (Transformation is applied to all
+          values)
+
+          .. note:: This metric cannot be calculated from probabilities
+
+          .. seealso:: :py:meth:`dprime`
+              
+          .. [1] Hautus, M. (1995). Corrections for extreme proportions and
+                 their biasing effects on estimated values of d'. Behavior
+                 Research Methods, Instruments, and Computers, 27, 46-51.
+        """
+        pHI = (self[HI] + 0.5)/(self[HI] + self[MI] + 1)
+        pFA = (self[FA] + 0.5)/(self[CR] + self[FA] + 1)
+        
+        return ltqnorm(pHI) - ltqnorm(pFA)
+    
     
     def beta(self):
         """
-        beta: classic parametric measure of response bias.
-        
-          [1] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
-              theory and psychophysics, reprint edition. Los Altos, CA:
-              Penisula Publihing.
-        """
-        global HI,FA
+        beta: classic parametric measure of response bias [1]_.
 
+          Use of :py:meth:`c` (or :py:meth:`loglinear_c`) as a parametric
+          measure of response bias may be preferred.
+
+          This funciton applies
+          Macmillan and Kaplan [2]_ correction to extreme values. 
+
+          .. seealso::
+             :py:meth:`c`
+             :py:meth:`loglinear_c`
+             :py:meth:`loglinear_beta`
+        
+          .. [1] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
+                 theory and psychophysics, reprint edition. Los Altos, CA:
+                 Penisula Publihing.
+              
+          .. [2] Macmillan, N. A., and Kaplan, H. L. (1985). Detection theory
+                 analysis of group data: Estimating sensitivity from average hit
+                 and false-alarm rates. Psychological Bulletin, 98, 185-199.
+        """
         N = self.count()
         zhr = ltqnorm(_correction(self.p(HI),N))
         zfar = ltqnorm(_correction(self.p(FA),N))
         return math.exp(-zhr*zhr/2 + zfar*zfar/2)
 
-    def logbeta(self):
-        """logbeta"""
-        return math.log10(self.beta())
 
+    def loglinear_beta(self):
+        """
+        beta: classic parametric measure of response bias [1]_.
+
+          Use of :py:meth:`c` (or :py:meth:`loglinear_c`) as a parametric
+          measure of response bias may be preferred.
+
+          Applies Hautus's [2]_ loglinear transformation to counts before
+          calculating beta. (Transformation is applied to all values)
+
+          .. note:: This metric cannot be calculated from probabilities
+
+          .. seealso::
+             :py:meth:`c`
+             :py:meth:`loglinear_c`
+             :py:meth:`beta`
+
+
+          .. [1] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
+                 theory and psychophysics, reprint edition. Los Altos, CA:
+                 Penisula Publihing.
+              
+          .. [2] Hautus, M. (1995). Corrections for extreme proportions and
+                 their biasing effects on estimated values of d'. Behavior
+                 Research Methods, Instruments, and Computers, 27, 46-51.
+        """
+        pHI = (self[HI] + 0.5)/(self[HI] + self[MI] + 1)
+        pFA = (self[FA] + 0.5)/(self[CR] + self[FA] + 1)
+        zhr = ltqnorm(pHI)
+        zfar = ltqnorm(pFA)
+        return math.exp(-zhr*zhr/2 + zfar*zfar/2)
+        
     def c(self):
         """
         c: parametric measure of response bias
 
           Generally recommended as a better measure than beta [1]_, [2]_,
           [3]_. First reason being that d' and c are independent [4]_.
-          Forumula from Macmillan (1993) [5]_. 
+          Forumula from Macmillan  [5]_.  Applies Macmillan and
+          Kaplan correction to extreme values. [6]_.
 
-          [1] Banks W. P. (1970). Signal detection theory and human memory.
-              Psychological Bulletin, 74, 81-99.
+          .. seealso::
+             :py:meth:`dprime`
+             :py:meth:`loglinear_c`
 
-          [2] Macmillan, N. A., and Creelman, C. D. (1990). Response bias:
-              Characteristics of detection theory, threshold theory, and
-              “nonparametric” indexes. Psychological Bulletin, 107, 401-413.
+        
+          .. [1] Banks W. P. (1970). Signal detection theory and human memory.
+                 Psychological Bulletin, 74, 81-99.
 
-          [3] Snodgrass, J. G., and Corwin, J. (1988). Pragmatics of
-              measuring recognition memory: Applications to dementia and
-              amnesia. Journal of Experimental Psychology: General, 117, 34-50.
+          .. [2] Macmillan, N. A., and Creelman, C. D. (1990). Response bias:
+                 Characteristics of detection theory, threshold theory, and
+                 nonparametric indexes. Psychological Bulletin, 107, 401-413.
 
-          [4] Ingham, J. G. (1970). Individual differences in signal detection.
-              Acta Psychologica, 34, 39-50.
+          .. [3] Snodgrass, J. G., and Corwin, J. (1988). Pragmatics of
+                 measuring recognition memory: Applications to dementia and
+                 amnesia. Journal of Experimental Psychology: General, 117, 34-50.
+
+          .. [4] Ingham, J. G. (1970). Individual differences in signal detection.
+                 Acta Psychologica, 34, 39-50.
           
-          [5] Macmillan, N. A. (1993). Signal detection theory as data analysis
-              method and psychological decision model. In G. Keren and C. Lewis
-              (Eds.), A handbook for data analysis in the behavioral sciences:
-              Methodological issues (pp. 21-57). Hillsdale, NJ: Erlbaum.
+          .. [5] Macmillan, N. A. (1993). Signal detection theory as data analysis
+                 method and psychological decision model. In G. Keren and C. Lewis
+                 (Eds.), A handbook for data analysis in the behavioral sciences:
+                 Methodological issues (pp. 21-57). Hillsdale, NJ: Erlbaum.
+              
+          .. [6] Macmillan, N. A., and Kaplan, H. L. (1985). Detection theory
+                 analysis of group data: Estimating sensitivity from average hit
+                 and false-alarm rates. Psychological Bulletin, 98, 185-199.
         """
-        global HI,FA
         N = self.count()
         return -1.*(.5*ltqnorm(_correction(self.p(HI),N)) + \
                     .5*ltqnorm(_correction(self.p(FA),N)))
+
+    def loglinear_c(self):
+        """
+        c: parametric measure of response bias
+
+          Applies Hautus's [1]_ loglinear transformation to counts
+          before calculating beta. (Transformation is applied to all
+          values)
+          
+          .. note:: This metric cannot be calculated from probabilities
+
+          .. seealso::
+             :py:meth:`c`
+              
+          .. [1] Hautus, M. (1995). Corrections for extreme proportions and
+                 their biasing effects on estimated values of d'. Behavior
+                 Research Methods, Instruments, and Computers, 27, 46-51.
+        """
+        pHI = (self[HI] + 0.5)/(self[HI] + self[MI] + 1)
+        pFA = (self[FA] + 0.5)/(self[CR] + self[FA] + 1)
         
+        return -1.*(.5*ltqnorm(pHI) + .5*ltqnorm(pFA))
+    
     def accuracy(self):
         """
         accuracy: (1.+p(HI) - p(FA)) / 2.
         """
-        global HI,FA
         return (1.+self.p(HI)-self.p(FA))/2.
     
     def mcc(self):
         """
-        Matthews correlation coefficient
+        Matthews [1]_ correlation coefficient
 
-          [1] Matthews, B.W. (1975). Comparison of the predicted and observed
-              secondary structure of T4 phage lysozyme. Biochim. Biophys. Acta,
-              405, 442-451.
+          .. [1] Matthews, B.W. (1975). Comparison of the predicted and observed
+                 secondary structure of T4 phage lysozyme. Biochim. Biophys. Acta,
+                 405, 442-451.
         """
-        global HI,FA,CR,MI
         pHI,pFA,pCR,pMI = self.p(HI),self.p(FA),self.p(CR),self.p(MI)
         num = pHI * pCR - pFA * pMI
         dem = math.sqrt((pHI + pFA)*( pHI + pMI )*( pCR + pFA )*( pCR + pMI ))
@@ -713,21 +905,34 @@ class SDT(dict):
     def precision(self):
         """
         precision
+        
+          .. note:: This metric cannot be calculated from probabilities
 
-          sdt.precision() <==> sdt.ppv()
+          ``sdt.precision() <==> sdt.ppv()``
         """
         return self.ppv()
     
     def recall(self):
         """
         recall
+        
+          .. note:: This metric cannot be calculated from probabilities
 
-          sdt.recall() <==> sdt.sensitivity()
+          ``sdt.recall() <==> sdt.sensitivity()``
         """
         return self.sensitivity()
     
     def f1(self):
-        """f1"""
+        """
+        f1: a.k.a. F1-Score, F-measure
+
+          The harmonic mean of precision and recall [1]_
+          
+          .. note:: This metric cannot be calculated from probabilities
+
+          .. [1] van Rijsbergen, C. J. (1979). Information Retrieval
+                 (2nd ed.). Butterworth. http://bit.ly/8yAjR
+        """
         precision,recall = self.precision(),self.recall()
         num = (2. * precision * recall)
         dem = (precision + recall)
@@ -739,13 +944,10 @@ class SDT(dict):
         """
         positive predictive value: TP / (TP + FP)
         
-          sdt.precision() <==> sdt.ppv()
+          .. note:: This metric cannot be calculated from probabilities
+        
+          ``sdt.precision() <==> sdt.ppv()``
         """
-        if not self._directmode:
-            raise NotImplementedError('use "direct" method')
-        
-        global TP, FP
-        
         num = self[TP]
         dem = self[TP] + self[FP]
         if dem == 0:
@@ -755,12 +957,9 @@ class SDT(dict):
     def npv(self):
         """
         negative predictive value: TN / (TN + FN)
+        
+          .. note:: This metric cannot be calculated from probabilities
         """
-        if not self._directmode:
-            raise NotImplementedError('use "direct" method')
-        
-        global FN, TN
-        
         num = self[TN]
         dem = self[TN] + self[FN]
         if dem == 0:
@@ -770,12 +969,9 @@ class SDT(dict):
     def fdr(self):
         """
         false discovery rate: FP / (TP + FP)
+        
+          .. note:: This metric cannot be calculated from probabilities
         """
-        if not self._directmode:
-            raise NotImplementedError('use "direct" method')
-        
-        global FP, TP
-        
         num = self[FP]
         dem = self[FP] + self[TP]
         if dem == 0:
@@ -786,13 +982,10 @@ class SDT(dict):
         """
         sensitivity: TP / (TP + FN)
         
-          sdt.recall() <==> sdt.sensitivity()
+          .. note:: This metric cannot be calculated from probabilities
+        
+          ``sdt.recall() <==> sdt.sensitivity()``
         """
-        if not self._directmode:
-            raise NotImplementedError('use "direct" method')
-        
-        global TP, FN
-        
         num = self[TP]
         dem = self[TP] + self[FN]
         if dem == 0:
@@ -802,12 +995,9 @@ class SDT(dict):
     def specificity(self):
         """
         specificity: TN / (TN + FP)
+        
+          .. note:: This metric cannot be calculated from probabilities
         """
-        if not self._directmode:
-            raise NotImplementedError('use "direct" method')
-        
-        global TN, FP
-        
         num = self[TN]
         dem = self[TN] + self[FP]
         if dem == 0:
@@ -820,7 +1010,9 @@ class SDT(dict):
         mutual information
 
           Alternative metric to compare classifiers suggested by Wallach
-          (2006) [1]_ and discussed by Murphy (2007) [2]_.
+          [1]_ and discussed by Murphy [2]_.
+          
+          .. note:: This metric cannot be calculated from probabilities
 
           Consider the following confusion matrices for classifiers A, B, and C.
           The prevalance rate is 90%.
@@ -837,6 +1029,7 @@ class SDT(dict):
 
           The above classifiers yield:
 
+            ================== ======= ======= =======
             Measure               A       B       C
             ================== ======= ======= =======
             d'                  0.000   2.576   2.462
@@ -851,20 +1044,15 @@ class SDT(dict):
             reflect this relationship. Mutual information is slightly more
             sensitive ([1]_ and [2]_ do discuss d').
         
-          [1] Wallach. H. (2006) Evaluation metrics for hard classi?ers.
-              Technical report, Cavendish Lab.,Univ. Cambridge.
+          .. [1] Wallach. H. (2006). Evaluation metrics for hard classi?ers.
+                 Technical report, Cavendish Lab.,Univ. Cambridge.
 
-          [2] Murphy, K. P. (2007). Performance evaluation of binary
-              classifiers. http://bit.ly/LzD5m0        
+          .. [2] Murphy, K. P. (2007). Performance evaluation of binary
+                 classifiers. http://bit.ly/LzD5m0        
         """
-        
-        if not self._directmode:
-            raise NotImplementedError('use "direct" method')
-
-        global HI,FA,MI,CR
-
-        # we need to determine some probabilities to aid calculating the mutual information
-        # y^ refers to the predicted labels and y refers to the true labels
+        # we need to determine some probabilities to aid calculating the
+        # mutual information y^ refers to the predicted labels and y
+        # refers to the true labels
         N = float(sum(self.values()))
         p = { 'y'  : [(self[CR]+self[FA])/N, (self[HI]+self[MI])/N],
               'y^' : [(self[CR]+self[MI])/N, (self[HI]+self[FA])/N],
@@ -875,10 +1063,10 @@ class SDT(dict):
         mi = 0.
         for i,j in zip([0,0,1,1], [0,1,0,1]):
             if p[('y^','y')][i][j]:
-                mi+=p[('y^','y')][i][j]*math.log( p[('y^','y')][i][j]/
-                                                 (p['y^'][i]*p['y'][j]) )
+                mi += p[('y^','y')][i][j] * \
+                      math.log( p[('y^','y')][i][j] / (p['y^'][i]*p['y'][j]) )
         return mi
-
+    
 #
 # Code to Implement "direct" functions
 #
@@ -889,12 +1077,11 @@ class SDT(dict):
 #
 # see: http://www.garyrobinson.net/2004/03/python_singleto.html
 class _S(Singleton):
+    global HI,MI,CR,FA
     def __init__(self):
         self.sdt = SDT()
 
     def setdirects(self, hi,mi,cr,fa):
-        global HI,MI,CR,FA
-        
         self.sdt._directmode = True
         
         self.sdt[HI] = hi
@@ -908,7 +1095,6 @@ class _S(Singleton):
         self.sdt.pHI = phi
         self.sdt.pFA = pfa
         
-
 # let's make life a little easier by automating the
 # creation of our "direct" and "prob" SDT methods
 
@@ -947,6 +1133,7 @@ class _vmethod(object):
         self.__name__ = methodname
         self.__doc__ = getattr(SDT, methodname).__doc__
 
+        self._has_prob_method = add_prob_method
         if add_prob_method:
             self.prob = lambda *args: _prob(self, *args)
             self.prob.__doc__ = 'Calculates metric based on hit '\
@@ -975,17 +1162,29 @@ class _vmethod(object):
         # _directmode with whatever data happens to be there.
         # Whatever uses it next is responsible for setting it up.
 
-# build methods using factory        
+    def __call__(self, *args):
+        """
+        based on the number of args and the availability of .prob
+        routes call to appropriate method.
+        """
+        if self._has_prob_method and len(args) == 2:
+            return self.prob(*args)
+        elif len(args) == 4:
+            return self.direct(*args)
+        else:
+            raise Exception('Cannot route args to method')
+
+# build methods using factory
+# docstrings are grabbed from SDT methods
 aprime      = _vmethod('aprime', True)
 amzs        = _vmethod('amzs', True)
 bpp         = _vmethod('bpp', True)
+bph         = _vmethod('bph', True)
 bppd        = _vmethod('bppd', True)
 bmz         = _vmethod('bmz', True)
-B           = _vmethod('B', True)
-logbmz      = _vmethod('logbmz', True)
+b           = _vmethod('b', True)
 dprime      = _vmethod('dprime', True)
 beta        = _vmethod('beta', True)
-logbeta     = _vmethod('logbeta', True)
 c           = _vmethod('c', True)
 accuracy    = _vmethod('accuracy', True)
 mcc         = _vmethod('mcc', True)
@@ -995,6 +1194,10 @@ f1          = _vmethod('f1')
 ppv         = _vmethod('ppv')
 npv         = _vmethod('npv')
 fdr         = _vmethod('fdr')
-sensitivity = _vmethod('sensitivity')
-specificity = _vmethod('specificity')
-mutual_info = _vmethod('mutual_info')
+sensitivity      = _vmethod('sensitivity')
+specificity      = _vmethod('specificity')
+mutual_info      = _vmethod('mutual_info')
+loglinear_bppd   = _vmethod('loglinear_bppd')
+loglinear_dprime = _vmethod('loglinear_dprime')
+loglinear_beta   = _vmethod('loglinear_beta')
+loglinear_c      = _vmethod('loglinear_c')

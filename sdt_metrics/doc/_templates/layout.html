@@ -1,0 +1,60 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+{{ super() }}
+{%- if not embedded %}
+<style type="text/css">
+  table.right { float: right; margin-left: 20px; }
+  table.right td { border: 1px solid #ccc; }
+
+/* These are for the citation customization
+   
+   I don't like using long variable names but don't want
+   to figure out what is in the namespace */
+div.specialfooter {
+    height:25px;
+    background-color: #E3EFF1;
+    color: #86989B;
+    padding: 3px 8px 3px 8px;
+    clear: both;
+    font-size: 0.8em;
+}
+div.specialfooter a {
+    color: #86989B;
+    text-decoration: underline;
+}
+div.specialfooterleft {
+    float:left;
+    width:60%
+    padding-left:15px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:left;
+}
+div.specialfooterright {
+    float:right;
+    width:40%
+    padding-right:13px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:right;
+}
+table.docutils {
+    width:100%
+}
+</style>
+{%- endif %}
+{% endblock %}
+
+{% block rootrellink %}
+        <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
+        <li><a href="{{ pathto('index') }}">Documentation</a>
+          &raquo;</li>
+{% endblock %}
+
+{% block header %}
+<div style="background-color: white; text-align: center; padding: 10px 10px 15px 15px; ">
+<img src="{{ pathto("_static/sdt_metrics_logo.png", 1) }}" alt="sdt-metrics logo" />
+</div>
+{% endblock %}
+

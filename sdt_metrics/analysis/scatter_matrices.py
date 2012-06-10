@@ -1,37 +1,31 @@
-import numpy as np
 from __future__ import print_function
 
 # Copyright (c) 2012, Roger Lew [see LICENSE.txt]
 
-if __name__ == '__main__':
-    from pyvttbl import DataFrame
-    from sdt_metrics import SDT
+import numpy as np
+import math
 
-    df = DataFrame()
+from pyvttbl import DataFrame
+from sdt_metrics import SDT, HI,MI,CR,FA, bppd, c, loglinear_c, loglinear_bppd
 
-    N = 10
-    for HI in xrange(N+1):
-        for FA in xrange(N+1):
-            MI = N-HI
-            CR = N-FA
-            counts = {'HI':HI,'MI':MI,'CR':CR,'FA':FA}
+# something to put data in
+df = DataFrame()
 
-            df.insert([('HI',HI),('FA',FA),
-                       ('Accuracy',           SDT.accuracy(SDT(counts))),
-                       ('PrecisionPPV',       SDT.precision(SDT(counts))),
-                       ("Dprime",             SDT.dprime(SDT(counts))),
-                       ("Aprime",             SDT.aprime(SDT(counts))),
-                       ("Amzs",               SDT.amzs(SDT(counts))),
-                       ('f1',                 SDT.f1(SDT(counts))),
-                       ('MCC',                SDT.mcc(SDT(counts))),
-                       ('Mutual_Information', SDT.mutual_info(SDT(counts))),
-                       ('logbeta',            SDT.logbeta(SDT(counts))),
-                       ('B',                  SDT.B(SDT(counts))),
-                       ('C',                  SDT.c(SDT(counts))),
-                       ("bpp",                SDT.bpp(SDT(counts))),
-                       ("bppD",               SDT.bppd(SDT(counts))),
-                       ("logbmz",             SDT.logbmz(SDT(counts)))])
+# make up data
+P = 10
+N = 10
+for hi in xrange(P+1):
+    for fa in xrange(N+1):
+        df.insert([(HI,hi),(MI,N-hi),(CR,N-fa),(FA,fa)])
 
+# calculate some metrics
+df['bppd']=bppd(df[HI],df[MI],df[CR],df[FA])
+df['loglinear_c']=loglinear_c(df[HI],df[MI],df[CR],df[FA])
+df['loglinear_bppd']=loglinear_bppd(df[HI],df[MI],df[CR],df[FA])
+df['c']=c(df[HI],df[MI],df[CR],df[FA])
+df['phi']= 1.*df[HI]/(df[HI]+df[MI])
+df['pllhi']= (df[HI] + .5)/(df[HI] + df[MI] + 1.)
+                           
 ##    df.scatter_matrix(['HI','Accuracy','MCC',"Aprime",'Amzs',
 ##                       'f1',"Dprime",'Mutual_Information'],
 ##                      diagonal='kde',trend='linear')
@@ -42,7 +36,16 @@ if __name__ == '__main__':
 ##    df.scatter_matrix(['HI','FA','Mutual_Information','Dprime','C','logbeta'],
 ##                      diagonal='kde',trend='linear')
 ##
-    df.scatter_matrix(['HI','FA','Dprime','C','Amzs','B'],
-                      diagonal='kde',trend='linear')
-    
-    
+##    df.scatter_matrix(['HI','FA','Dprime','C','Amzs','B'],
+##                      diagonal='kde',trend='linear')
+
+df.scatter_matrix(['phi','pllhi'],
+                  diagonal='kde',trend='linear')
+                           
+df.scatter_matrix(['c','loglinear_c','loglinear_bppd','bppd'],
+                  diagonal='kde',trend='linear')
+
+df2 = df.where('bppd != 1 and bppd != -1')
+
+df2.scatter_matrix(['c','loglinear_c','loglinear_bppd','bppd'],
+                   diagonal='kde',trend='linear',fname='filetered.png')

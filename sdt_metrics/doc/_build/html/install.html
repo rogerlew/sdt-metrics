@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation Instructions &mdash; sdt_metrics v 0.1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'v 0.1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sdt_metrics v 0.1.0.0 documentation" href="index.html" />
+    <link rel="next" title="aprime" href="aprime.html" />
+    <link rel="prev" title="Usage Examples" href="index.html" />
+ 
+<style type="text/css">
+  table.right { float: right; margin-left: 20px; }
+  table.right td { border: 1px solid #ccc; }
+
+/* These are for the citation customization
+   
+   I don't like using long variable names but don't want
+   to figure out what is in the namespace */
+div.specialfooter {
+    height:25px;
+    background-color: #E3EFF1;
+    color: #86989B;
+    padding: 3px 8px 3px 8px;
+    clear: both;
+    font-size: 0.8em;
+}
+div.specialfooter a {
+    color: #86989B;
+    text-decoration: underline;
+}
+div.specialfooterleft {
+    float:left;
+    width:60%
+    padding-left:15px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:left;
+}
+div.specialfooterright {
+    float:right;
+    width:40%
+    padding-right:13px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:right;
+}
+table.docutils {
+    width:100%
+}
+</style>
+
+  </head>
+  <body>
+<div style="background-color: white; text-align: center; padding: 10px 10px 15px 15px; ">
+<img src="_static/sdt_metrics_logo.png" alt="sdt-metrics logo" />
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="aprime.html" title="aprime"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Usage Examples"
+             accesskey="P">previous</a> |</li>
+        <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
+        <li><a href="index.html">Documentation</a>
+          &raquo;</li>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Usage Examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="aprime.html"
+                        title="next chapter">aprime</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/install.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-instructions">
+<h1>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h1>
+<p>The requirements for using sdt_metrics are:</p>
+<ol class="arabic simple">
+<li><strong>Python 2.7.x</strong>
+introduced in the collections module of 2.7. )</li>
+<li><strong>SciPy</strong> : (tested with 0.9.0)</li>
+<li><strong>NumPy</strong> : (tested with 1.5.1)</li>
+<li><strong>Matplotlib</strong> : (tested with 1.0.1)</li>
+</ol>
+<p>Options to install sdt_metrics</p>
+<ol class="arabic">
+<li><p class="first">Acquire sdt_metrics from PyPi</p>
+<ol class="arabic simple">
+<li>get <a class="reference external" href="http://pypi.python.org/pypi/setuptools/">setuptools</a></li>
+<li>run easy_install -U sdt_metrics</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the module should install unzipped</p>
+</div>
+</li>
+<li><p class="first">Install from source</p>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://pypi.python.org/pypi/sdt_metrics/">Obtain source from PyPi</a></dt>
+<dd><ol class="first last arabic simple" start="2">
+<li>Unzip</li>
+<li>Run &#8220;setup.py install&#8221;</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+</li>
+</ol>
+<p>To develop sdt_metrics you should also have:</p>
+<ol class="arabic simple">
+<li><strong>nose</strong> : (using 0.11.3)</li>
+<li><strong>Sphinx</strong> : (tested with 1.1.3)</li>
+<li><strong>pyvttbl</strong> : (tested with 0.5.2.1, needed to run tests)</li>
+</ol>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="aprime.html" title="aprime"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Usage Examples"
+             >previous</a> |</li>
+        <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
+        <li><a href="index.html">Documentation</a>
+          &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Roger Lew.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -12,6 +12,7 @@ import random
 from random import shuffle
 from string import digits,ascii_lowercase
 
+import sdt_metrics
 from sdt_metrics import _S,SDT, HI,MI,FA,CR, mutual_info, aprime
 
 class TestSDT__init__(unittest.TestCase):
@@ -283,7 +284,23 @@ class TestSDT_p(unittest.TestCase):
 class TestSDT_dprime(unittest.TestCase):
     # http://www.linguistics.ucla.edu/faciliti/facilities/statistics/dprime.htm
     def test0(self):
-        self.assertEqual(SDT(HI=20,MI=5,FA=10,CR=15).dprime(),1.0949683355866173)
+        d = SDT(HI=20,MI=5,FA=10,CR=15).dprime()
+        self.assertAlmostEqual(d, 1.0949683355866173, 7)
+        
+class TestSDT_loglinear_dprime(unittest.TestCase):
+    def test0(self):
+        d = SDT(HI=20,MI=5,FA=10,CR=15).loglinear_dprime()
+        self.assertAlmostEqual(d, 1.044498705934068, 7)
+
+class TestSDT_c(unittest.TestCase):
+    def test0(self):
+        d = SDT(HI=20,MI=5,FA=10,CR=15).c()
+        self.assertAlmostEqual(d, -0.29413706493331, 7)
+        
+class TestSDT_loglinear_c(unittest.TestCase):
+    def test0(self):
+        d = SDT(HI=20,MI=5,FA=10,CR=15).loglinear_c()
+        self.assertAlmostEqual(d, -0.2788451754114444, 7)
         
 class TestSDT_mutual_information(unittest.TestCase):
     # http://www.cs.ubc.ca/~murphyk/Teaching/CS340-Fall07/reading/rocHandout.pdf
@@ -323,7 +340,7 @@ class TestSDT_sensitivity(unittest.TestCase):
         D = SDT(HI=20,MI=180,FA=10,CR=1820)
         self.assertEqual(round(D.sensitivity(),2), 0.67)
 
-class TestSDT_Singleton(unittest.TestCase):
+class Test_Singleton(unittest.TestCase):
     # test code to make sure sdt is really a singleton
     def test0(self):
         id1 = id(_S.getInstance().sdt)
@@ -335,7 +352,7 @@ class TestSDT_Singleton(unittest.TestCase):
         self.assertEqual(id1,id2)
         self.assertEqual(id2,id3)
 
-class TestSDT__vmethod_direct(unittest.TestCase):
+class Test__vmethod_direct(unittest.TestCase):
     def test0(self):
         """float args"""
         self.assertEqual(aprime.direct(12,3,4,34),
@@ -350,7 +367,7 @@ class TestSDT__vmethod_direct(unittest.TestCase):
         for r,d in zip(R,D):
             self.assertAlmostEqual(r,d,7)
 
-class TestSDT__vmethod_prob(unittest.TestCase):
+class Test__vmethod_prob(unittest.TestCase):
     def test0(self):
         """float args"""
 
@@ -371,7 +388,52 @@ class TestSDT__vmethod_prob(unittest.TestCase):
         """test _prob binding"""
         self.assertEqual(hasattr(mutual_info,'prob'), False)
 
-            
+class TestSDT__vmethod__call__(unittest.TestCase):
+    def test1(self):
+        self.assertEqual(str(aprime.prob([12/15., 12/15.], [34/38., 4/8.])),
+                         str(aprime([12/15., 12/15.], [34/38., 4/8.])))
+
+    def test2(self):
+        self.assertEqual(str(aprime.prob(12/15., 34/38.)),
+                         str(aprime(12/15., 34/38.)))            
+
+    def test3(self):
+        self.assertEqual(str(aprime.direct([12,12],[3,3],[4,4],[34,4])),
+                         str(aprime([12,12],[3,3],[4,4],[34,4])))
+
+    def test4(self):
+        self.assertEqual(str(aprime.direct(12,3,4,34)),
+                         str(aprime(12,3,4,34)))
+
+class Test_plotting_poc_curve(unittest.TestCase):
+    def test1(self):
+        """given an SDT object"""
+        sdt = SDT(HI=116, MI=30, CR=323, FA=80)
+        sdt_metrics.plotting.poc_plot(sdt)
+        
+    def test2(self):
+        """given probabilities"""
+        sdt_metrics.plotting.poc_plot(.67, .43)
+        
+    def test3(self):
+        """given an counts"""
+        sdt_metrics.plotting.poc_plot(116, 30, 50, 50)
+
+class Test_plotting_roc_curve(unittest.TestCase):
+    def test1(self):
+        """given an SDT object"""
+        sdt = SDT(HI=116, MI=30, CR=323, FA=80)
+        sdt_metrics.plotting.roc_plot(sdt)
+
+    def test2(self):
+        """given probabilities"""
+        sdt_metrics.plotting.roc_plot(.67, .43)
+        
+    def test3(self):
+        """given an counts"""
+        sdt_metrics.plotting.roc_plot(116, 30, 50, 50)
+
+        
 def suite():
     return unittest.TestSuite((
             unittest.makeSuite(TestSDT__init__),
@@ -393,14 +455,20 @@ def suite():
             unittest.makeSuite(TestSDT_count),
             unittest.makeSuite(TestSDT_p),
             unittest.makeSuite(TestSDT_dprime),
+            unittest.makeSuite(TestSDT_loglinear_dprime),
+            unittest.makeSuite(TestSDT_c),
+            unittest.makeSuite(TestSDT_loglinear_c),
             unittest.makeSuite(TestSDT_PPV),
             unittest.makeSuite(TestSDT_NPV),
             unittest.makeSuite(TestSDT_specificity),
             unittest.makeSuite(TestSDT_sensitivity),
             unittest.makeSuite(TestSDT_mutual_information),
-            unittest.makeSuite(TestSDT_Singleton),
-            unittest.makeSuite(TestSDT__vmethod_direct),
-            unittest.makeSuite(TestSDT__vmethod_prob)
+            unittest.makeSuite(Test_Singleton),
+            unittest.makeSuite(Test__vmethod_direct),
+            unittest.makeSuite(Test__vmethod_prob),
+            unittest.makeSuite(Test__vmethod_prob),
+            unittest.makeSuite(Test_plotting_poc_curve),
+            unittest.makeSuite(Test_plotting_roc_curve),
                               ))
 
 if __name__ == "__main__":
