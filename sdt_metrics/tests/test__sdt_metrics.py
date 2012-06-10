@@ -433,7 +433,19 @@ class Test_plotting_roc_curve(unittest.TestCase):
         """given an counts"""
         sdt_metrics.plotting.roc_plot(116, 30, 50, 50)
 
+class Test_plotting_mult_roc_curve(unittest.TestCase):
+    def test1(self):
+        """given an SDT object"""
+        sdt_obj = SDT(HI=116, MI=30, CR=323, FA=80)
+        sdt_probs = (.97,.22)
+        sdt_counts = (76,67,80,65)
+        sdt_metrics.plotting.mult_roc_plot((sdt_obj,  'from SDT object'),
+                                           (sdt_probs, 'from probs'),
+                                           (sdt_counts, 'from counts'),
+                                           fname = 'mult_roc_example.png')
         
+
+     
 def suite():
     return unittest.TestSuite((
             unittest.makeSuite(TestSDT__init__),
@@ -469,6 +481,7 @@ def suite():
             unittest.makeSuite(Test__vmethod_prob),
             unittest.makeSuite(Test_plotting_poc_curve),
             unittest.makeSuite(Test_plotting_roc_curve),
+            unittest.makeSuite(Test_plotting_mult_roc_curve)
                               ))
 
 if __name__ == "__main__":
