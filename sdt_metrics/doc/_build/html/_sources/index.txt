@@ -36,6 +36,7 @@
    roc_plot
    mult_roc_plot
    metric_validation_plot
+   loglinear_bppd_analysis
 
 :doc:`install`
 
@@ -139,7 +140,7 @@ Nonparametric Metrics of Response Bias
    :doc:`bph`              , "B'H: Hodos, W. (1970)"
    :doc:`bppd`             , "B''D: Donaldson, W. (1992)"
    :doc:`bmz`              , "Bmz: Zhang, J., and Mueller, S. T. (2005)"
-   :doc:`loglinear_bppd`   , "loglinear B''D"
+   :doc:`loglinear_bppd`   , "loglinear B''D" :doc:`loglinear_bppd_analysis`
    
    
 Probability Related Measures
