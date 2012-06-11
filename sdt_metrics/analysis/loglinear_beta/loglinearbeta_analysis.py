@@ -45,7 +45,7 @@ if __name__ == '__main__':
     df['residuals'] = df['loglinear_bddp']-df['bppd']
 
     # exclude boundary conditions from this second table
-    df2 = df.where('bppd != -1 and bppd != 1')
+    df2 = df.where('HI != 0 and MI != 0 and CR != 0 and FA != 0')
 
     #
     # perform analyses

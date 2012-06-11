@@ -6,43 +6,79 @@
    :hidden:
 
    install
-   aprime
-   amzs
-   bpp
-   bph
-   bppd
-   bmz
-   b
    dprime
+   loglinear_dprime
    beta
    c
+   loglinear_beta
+   loglinear_c
    accuracy
+   aprime
+   amzs
+   b
+   bpp
+   bph
+   bmz
+   bppd
+   loglinear_bppd
    mcc
-   precision
-   recall
-   f1
    ppv
    npv
    fdr
    sensitivity
+   precision
+   recall
+   f1
    specificity
    mutual_info
-   loglinear_bppd
-   loglinear_dprime
-   loglinear_beta
-   loglinear_c
    SDT
    poc_plot
    roc_plot
    mult_roc_plot
    metric_validation_plot
+   sensitivity_scatter_matrix
+   prob_scatter_matrix
+   bias_scatter_matrix
    loglinear_bppd_analysis
 
-:doc:`install`
 
+Welcome to the documentation for sdt_metrics!
+=============================================
+
+Overview
+-----------------
+
+Signal Detection Theory (SDT) has come to be an invaluable tool to
+psychology and other disciplines. The underlying theory suggests 
+that a discriminator (albeit a human, machine classifier, or diagnostic 
+test) detects the presence of a signal buried in noise. The 
+performance of the discriminator is assessed in terms of sensitivity 
+and response bias. Sensitivity describes how well the signal + noise 
+distribution is segregated from the noise distribution. Response bias 
+or decision bias describes systematic over-or-underestimates the 
+probability of a true event. 
+
+This package provides a collection of metrics for assessing signal
+detection performance. 
+
+*  All the measures can be calculated from hit, 
+   miss, correct rejection, and false alarm counts 
+   
+*  Many can be calculated from probabilities. Some would require 
+   knowing prevalence rate, which isn't obtainable from just the 
+   hit and false alarm rates.
+ 
+*  Unlike many online calculators the implementations here will 
+   provide a valid result across the entirety of ROC space
+
+   
+Installation
+---------------
+
+View the :doc:`install`
 
 Usage Examples
-==============
+---------------
 
 Let's cut to the chase
 
@@ -52,7 +88,7 @@ Let's cut to the chase
     >>> dprime(hi,mi,cr,fa)
     0.9618717480344676
 
-If given to arguments it'll treat them as probabilities
+If given two arguments it'll treat them as probabilities
 
     >>> phi = hi/(hi+mi)
     >>> pfa = fa/(cr+fa)
@@ -86,10 +122,10 @@ sdt_metrics.SDT is a collections.Counter-like object for storing data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Available Metrics
-=================
+------------------
 
 Parametric Metrics of Sensitivity
---------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. the widths defines proportions between the columns
    added table.docutils {width:100%;} to layout.html in _templates
@@ -104,7 +140,7 @@ Parametric Metrics of Sensitivity
    
    
 Parametric Metrics of Response Bias
---------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. csv-table::
    :header: "",""
@@ -117,7 +153,7 @@ Parametric Metrics of Response Bias
    
    
 Nonparametric Metrics of Sensitivity
---------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. csv-table::
    :header: "",""
@@ -129,7 +165,7 @@ Nonparametric Metrics of Sensitivity
    
    
 Nonparametric Metrics of Response Bias
---------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. csv-table::
    :header: "",""
@@ -140,20 +176,19 @@ Nonparametric Metrics of Response Bias
    :doc:`bph`              , "B'H: Hodos, W. (1970)"
    :doc:`bppd`             , "B''D: Donaldson, W. (1992)"
    :doc:`bmz`              , "Bmz: Zhang, J., and Mueller, S. T. (2005)"
-   :doc:`loglinear_bppd`   , "loglinear B''D" :doc:`loglinear_bppd_analysis`
-   
+   :doc:`loglinear_bppd`   , "loglinear B''D"
    
 Probability Related Measures
---------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. csv-table::
    :header: "",""
    :widths: 1,3
    
    :doc:`mcc`              , "Matthews Correlation Coefficient"
-   :doc:`ppv`              , "Positive Predictive Value (TP / (TP + FP))"
-   :doc:`npv`              , "Negative Predictive Value (TN / (TN + FN))"
-   :doc:`fdr`              , "False Discovery Rate (FP / (TP + FP))"
+   :doc:`ppv`              , "TP / (TP + FP) Positive Predictive Value"
+   :doc:`npv`              , "TN / (TN + FN) Negative Predictive Value"
+   :doc:`fdr`              , "FP / (TP + FP) False Discovery Rate"
    :doc:`sensitivity`      , "TP / (TP + FN) ``sdt.recall() <==> sdt.sensitivity()``"
    :doc:`precision`        , "TP / (TP + FP) ``sdt.precision() <==> sdt.ppv()``"
    :doc:`recall`           , "TP / (TP + FN) ``sdt.sensitivity() <==> sdt.recall()``"
@@ -162,7 +197,8 @@ Probability Related Measures
    :doc:`mutual_info`      , "Wallach. H. (2006); Murphy, K. P. (2007)"
 
 SDT Object
-==================
+------------
+
 .. csv-table::
    :header: "",""
    :widths: 1,3
@@ -171,7 +207,8 @@ SDT Object
 
 
 Plotting
-==================
+----------
+
 .. csv-table::
    :header: "",""
    :widths: 1,3
@@ -181,9 +218,20 @@ Plotting
    :doc:`mult_roc_plot`          , "Multiple ROC Curves Plot"
    :doc:`metric_validation_plot` , "pcolor plot of the metric over ROC space"
 
+Analyses
+----------
+
+.. csv-table::
+   :header: "",""
+   :widths: 1,3
+   
+   :doc:`sensitivity_scatter_matrix` , "Scatter Matrix comparing `dprime`, `aprime`, `amzs`, `accuracy`"
+   :doc:`prob_scatter_matrix`        , "Scatter Matrix comparing `mcc`, `f1`, `mutual_info`, `accuracy`"
+   :doc:`bias_scatter_matrix`        , "Scatter Matrix comparing `log(beta)`, `c`, `bppd`, `loglinear_bppd`, `log(bmz)`"
+   :doc:`loglinear_bppd_analysis`    , "Addresses boundary sensitivity problems of bppd"
 
 Indices and tables
-==================
+-------------------
 
 * :ref:`genindex`
 * :ref:`search`

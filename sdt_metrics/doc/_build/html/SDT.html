@@ -27,7 +27,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="sdt_metrics v 0.1.1.1 documentation" href="index.html" />
     <link rel="next" title="poc_plot" href="poc_plot.html" />
-    <link rel="prev" title="loglinear_c" href="loglinear_c.html" />
+    <link rel="prev" title="mutual_info" href="mutual_info.html" />
  
 <style type="text/css">
   table.right { float: right; margin-left: 20px; }
@@ -68,6 +68,11 @@ div.specialfooterright {
 table.docutils {
     width:100%
 }
+
+table.citation td.label{
+    width:150px;
+}
+
 </style>
 
   </head>
@@ -86,7 +91,7 @@ table.docutils {
           <a href="poc_plot.html" title="poc_plot"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="loglinear_c.html" title="loglinear_c"
+          <a href="mutual_info.html" title="mutual_info"
              accesskey="P">previous</a> |</li>
         <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
         <li><a href="index.html">Documentation</a>
@@ -97,8 +102,8 @@ table.docutils {
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="loglinear_c.html"
-                        title="previous chapter">loglinear_c</a></p>
+  <p class="topless"><a href="mutual_info.html"
+                        title="previous chapter">mutual_info</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="poc_plot.html"
                         title="next chapter">poc_plot</a></p>
@@ -420,7 +425,7 @@ Macmillan and Kaplan <a href="#id85"><span class="problematic" id="id86"><span i
 <tbody valign="top">
 <tr><td class="label">[1]</td><td>Green, D. M., and Swets J. A. (1996/1988). Signal Detection
 theory and psychophysics, reprint edition. Los Altos, CA:
-Penisula Publihing.</td></tr>
+Penisula Publishing.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id14" rules="none">
@@ -632,7 +637,7 @@ Lecture Notes. <a class="reference external" href="http://bit.ly/KIyKkt">http://
 <tbody valign="top">
 <tr><td class="label">[2]</td><td>Green, D. M., and Swets J. A. (1996/1988). Signal Detection
 theory and psychophysics, reprint edition. Los Altos, CA:
-Penisula Publihing.</td></tr>
+Penisula Publishing.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id48" rules="none">
@@ -765,7 +770,7 @@ calculating beta. (Transformation is applied to all values)</p>
 <tbody valign="top">
 <tr><td class="label">[1]</td><td>Green, D. M., and Swets J. A. (1996/1988). Signal Detection
 theory and psychophysics, reprint edition. Los Altos, CA:
-Penisula Publihing.</td></tr>
+Penisula Publishing.</td></tr>
 </tbody>
 </table>
 <table class="docutils footnote" frame="void" id="id58" rules="none">
@@ -782,8 +787,9 @@ Research Methods, Instruments, and Computers, 27, 46-51.</td></tr>
 <dt id="sdt_metrics.SDT.loglinear_bppd">
 <tt class="descname">loglinear_bppd</tt><big>(</big><big>)</big><a class="headerlink" href="#sdt_metrics.SDT.loglinear_bppd" title="Permalink to this definition">¶</a></dt>
 <dd><p>loglinear B&#8217;&#8216;d: nonparametric measure of response bias</p>
-<p>Applies Hautus&#8217;s <a href="#id129"><span class="problematic" id="id130"><span id="id59"></span>[1]_</span></a> loglinear transformation to counts
-before calculating bppd.</p>
+<p>Corrects boundary problems with bppd. by applying Hautus&#8217;s <a href="#id129"><span class="problematic" id="id130"><span id="id59"></span>[1]_</span></a> loglinear
+transformation to counts before calculating bppd. For more information see
+the <a class="reference internal" href="loglinear_bppd_analysis.html"><em>Analysis of loglinear_bppd</em></a></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This metric cannot be calculated from probabilities</p>
@@ -1091,7 +1097,7 @@ allowed to contain zero and negative counts.</p>
           <a href="poc_plot.html" title="poc_plot"
              >next</a> |</li>
         <li class="right" >
-          <a href="loglinear_c.html" title="loglinear_c"
+          <a href="mutual_info.html" title="mutual_info"
              >previous</a> |</li>
         <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
         <li><a href="index.html">Documentation</a>

@@ -54,11 +54,12 @@ def metric_validation_plot(metric_name, N=100, log=False, bph=False):
     pylab.subplots_adjust(left=.2, bottom=.18, top=.93, right=.9)
     pylab.subplot(111, aspect='equal')
     pylab.title(metric_name)
-    if log or bph:
-        
+    if bph: 
         mask = np.array([[(-1,1)[v>0] for v in L] for L in A])
         A = np.array([[math.log(abs(v)+1) for v in L] for L in A])
         pylab.pcolor(np.array(F), np.array(H), A*mask)
+    elif log:
+        pylab.pcolor(np.array(F), np.array(H), np.log(np.array(A)))
     else:
         pylab.pcolor(np.array(F), np.array(H), np.array(A))
     pylab.xlim([0,N+1])

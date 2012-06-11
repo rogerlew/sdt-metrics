@@ -41,8 +41,8 @@ best to briefly discuss those gotchas here.
 
  1. The inverse normal function used by dprime, beta, and c is
     undefined at 0 and 1 probabilities. The "standard correction" to
-    set a probability of 0 to 1/N and to set a probability of 1 to
-    1-1/N. To make this as transparent to the user as possible I didn't
+    set a probability of 0 to 1/(2N) and to set a probability of 1 to
+    1-1/(2N). To make this as transparent to the user as possible I didn't
     want the function prototypes to be different for these metrics.
     This is part of the reason that the metrics are methods of the SDT
     class.
@@ -125,7 +125,6 @@ def _correction(v, N):
     if 0 < v < 1:
         return v
     elif N is None or v < 0 or v >1:
-        print(v,N)
         raise ValueError('v should be >= 0 and <= 1')
 
     # at this point we know v must be 0 or 1 and N is not None
@@ -647,9 +646,10 @@ class SDT(dict):
         """
         loglinear B''d: nonparametric measure of response bias
 
-          Applies Hautus's [1]_ loglinear transformation to counts
-          before calculating bppd.
-
+          Corrects boundary problems with bppd. by applying Hautus's [1]_ loglinear
+          transformation to counts before calculating bppd. For more information see
+          the :doc:`loglinear_bppd_analysis`
+          
           .. note:: This metric cannot be calculated from probabilities
 
           .. seealso:: :py:meth:`bppd`
@@ -695,8 +695,8 @@ class SDT(dict):
           is Green and Swets  [2]_. Calculation uses the formula given
           by Macmillan [3]_. Extreme probabilities of 0 and 1 are
           treated using the correction suggested by Macmillan and Kaplan
-          [4]_. Rates of 0 are replaced with 1/n and rates of 1 are
-          replaced wtih 1 - 1/n. This approach has been shown to be biased
+          [4]_. Rates of 0 are replaced with 1/(2n) and rates of 1 are
+          replaced wtih 1 - 1/(2n). This approach has been shown to be biased
           (Miller [5]_). Hautus's [6]_ loglinear approach may
           be preferred. For a more extensive overview on treating extreme values
           see Stanislaw and Todorov [7]_. 
@@ -708,7 +708,7 @@ class SDT(dict):
 
           .. [2] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
                  theory and psychophysics, reprint edition. Los Altos, CA:
-                 Penisula Publihing.
+                 Penisula Publishing.
 
           .. [3] Macmillan, N. A. (1993). Signal detection theory as data analysis
                  method and psychological decision model. In G. Keren & C. Lewis
@@ -773,7 +773,7 @@ class SDT(dict):
         
           .. [1] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
                  theory and psychophysics, reprint edition. Los Altos, CA:
-                 Penisula Publihing.
+                 Penisula Publishing.
               
           .. [2] Macmillan, N. A., and Kaplan, H. L. (1985). Detection theory
                  analysis of group data: Estimating sensitivity from average hit
@@ -805,7 +805,7 @@ class SDT(dict):
 
           .. [1] Green, D. M., and Swets J. A. (1996/1988). Signal Detection
                  theory and psychophysics, reprint edition. Los Altos, CA:
-                 Penisula Publihing.
+                 Penisula Publishing.
               
           .. [2] Hautus, M. (1995). Corrections for extreme proportions and
                  their biasing effects on estimated values of d'. Behavior

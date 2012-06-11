@@ -3,3 +3,4 @@ syntax: glob
 *.db
 dist/*
 sdt_metrics.egg-info/*
+sdt_metrics/doc/_build/html/*doc.zip

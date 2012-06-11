@@ -26,8 +26,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="sdt_metrics v 0.1.1.1 documentation" href="index.html" />
-    <link rel="next" title="loglinear_dprime" href="loglinear_dprime.html" />
-    <link rel="prev" title="mutual_info" href="mutual_info.html" />
+    <link rel="next" title="mcc" href="mcc.html" />
+    <link rel="prev" title="bppd" href="bppd.html" />
  
 <style type="text/css">
   table.right { float: right; margin-left: 20px; }
@@ -68,6 +68,11 @@ div.specialfooterright {
 table.docutils {
     width:100%
 }
+
+table.citation td.label{
+    width:150px;
+}
+
 </style>
 
   </head>
@@ -83,10 +88,10 @@ table.docutils {
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="loglinear_dprime.html" title="loglinear_dprime"
+          <a href="mcc.html" title="mcc"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="mutual_info.html" title="mutual_info"
+          <a href="bppd.html" title="bppd"
              accesskey="P">previous</a> |</li>
         <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
         <li><a href="index.html">Documentation</a>
@@ -97,11 +102,11 @@ table.docutils {
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="mutual_info.html"
-                        title="previous chapter">mutual_info</a></p>
+  <p class="topless"><a href="bppd.html"
+                        title="previous chapter">bppd</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="loglinear_dprime.html"
-                        title="next chapter">loglinear_dprime</a></p>
+  <p class="topless"><a href="mcc.html"
+                        title="next chapter">mcc</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/loglinear_bppd.txt"
@@ -136,8 +141,9 @@ table.docutils {
 <em class="property">class </em><tt class="descclassname">sdt_metrics.</tt><tt class="descname">loglinear_bppd</tt><big>(</big><em>methodname</em>, <em>add_prob_method=False</em><big>)</big><a class="headerlink" href="#sdt_metrics.loglinear_bppd" title="Permalink to this definition">¶</a></dt>
 <dd><p>loglinear B&#8217;&#8216;d: nonparametric measure of response bias</p>
 <blockquote>
-<div><p>Applies Hautus&#8217;s <a class="footnote-reference" href="#id2" id="id1">[1]</a> loglinear transformation to counts
-before calculating bppd.</p>
+<div><p>Corrects boundary problems with bppd. by applying Hautus&#8217;s <a class="footnote-reference" href="#id2" id="id1">[1]</a> loglinear
+transformation to counts before calculating bppd. For more information see
+the <a class="reference internal" href="loglinear_bppd_analysis.html"><em>Analysis of loglinear_bppd</em></a></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This metric cannot be calculated from probabilities</p>
@@ -186,10 +192,10 @@ routes call to appropriate method.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="loglinear_dprime.html" title="loglinear_dprime"
+          <a href="mcc.html" title="mcc"
              >next</a> |</li>
         <li class="right" >
-          <a href="mutual_info.html" title="mutual_info"
+          <a href="bppd.html" title="bppd"
              >previous</a> |</li>
         <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
         <li><a href="index.html">Documentation</a>

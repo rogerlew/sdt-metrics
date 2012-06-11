@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage Examples &mdash; sdt_metrics v 0.1.1.1 documentation</title>
+    <title>Welcome to the documentation for sdt_metrics! &mdash; sdt_metrics v 0.1.1.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -67,6 +67,11 @@ div.specialfooterright {
 table.docutils {
     width:100%
 }
+
+table.citation td.label{
+    width:150px;
+}
+
 </style>
 
   </head>
@@ -140,9 +145,37 @@ Index</a>, or install it with:</p>
             
   <div class="toctree-wrapper compound">
 </div>
-<p><a class="reference internal" href="install.html"><em>Installation Instructions</em></a></p>
+<div class="section" id="welcome-to-the-documentation-for-sdt-metrics">
+<h1>Welcome to the documentation for sdt_metrics!<a class="headerlink" href="#welcome-to-the-documentation-for-sdt-metrics" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Signal Detection Theory (SDT) has come to be an invaluable tool to
+psychology and other disciplines. The underlying theory suggests
+that a discriminator (albeit a human, machine classifier, or diagnostic
+test) detects the presence of a signal buried in noise. The
+performance of the discriminator is assessed in terms of sensitivity
+and response bias. Sensitivity describes how well the signal + noise
+distribution is segregated from the noise distribution. Response bias
+or decision bias describes systematic over-or-underestimates the
+probability of a true event.</p>
+<p>This package provides a collection of metrics for assessing signal
+detection performance.</p>
+<ul class="simple">
+<li>All the measures can be calculated from hit,
+miss, correct rejection, and false alarm counts</li>
+<li>Many can be calculated from probabilities. Some would require
+knowing prevalence rate, which isn&#8217;t obtainable from just the
+hit and false alarm rates.</li>
+<li>Unlike many online calculators the implementations here will
+provide a valid result across the entirety of ROC space</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>View the <a class="reference internal" href="install.html"><em>Installation Instructions</em></a></p>
+</div>
 <div class="section" id="usage-examples">
-<h1>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h1>
+<h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h2>
 <p>Let&#8217;s cut to the chase</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdt_metrics</span> <span class="kn">import</span> <span class="n">dprime</span>
@@ -151,7 +184,7 @@ Index</a>, or install it with:</p>
 <span class="go">0.9618717480344676</span>
 </pre></div>
 </div>
-<p>If given to arguments it&#8217;ll treat them as probabilities</p>
+<p>If given two arguments it&#8217;ll treat them as probabilities</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">phi</span> <span class="o">=</span> <span class="n">hi</span><span class="o">/</span><span class="p">(</span><span class="n">hi</span><span class="o">+</span><span class="n">mi</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pfa</span> <span class="o">=</span> <span class="n">fa</span><span class="o">/</span><span class="p">(</span><span class="n">cr</span><span class="o">+</span><span class="n">fa</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dprime</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">pfa</span><span class="p">)</span>
@@ -185,9 +218,9 @@ Index</a>, or install it with:</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="available-metrics">
-<h1>Available Metrics<a class="headerlink" href="#available-metrics" title="Permalink to this headline">¶</a></h1>
+<h2>Available Metrics<a class="headerlink" href="#available-metrics" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="parametric-metrics-of-sensitivity">
-<h2>Parametric Metrics of Sensitivity<a class="headerlink" href="#parametric-metrics-of-sensitivity" title="Permalink to this headline">¶</a></h2>
+<h3>Parametric Metrics of Sensitivity<a class="headerlink" href="#parametric-metrics-of-sensitivity" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="25%" />
@@ -209,7 +242,7 @@ Index</a>, or install it with:</p>
 </table>
 </div>
 <div class="section" id="parametric-metrics-of-response-bias">
-<h2>Parametric Metrics of Response Bias<a class="headerlink" href="#parametric-metrics-of-response-bias" title="Permalink to this headline">¶</a></h2>
+<h3>Parametric Metrics of Response Bias<a class="headerlink" href="#parametric-metrics-of-response-bias" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="25%" />
@@ -237,7 +270,7 @@ Index</a>, or install it with:</p>
 </table>
 </div>
 <div class="section" id="nonparametric-metrics-of-sensitivity">
-<h2>Nonparametric Metrics of Sensitivity<a class="headerlink" href="#nonparametric-metrics-of-sensitivity" title="Permalink to this headline">¶</a></h2>
+<h3>Nonparametric Metrics of Sensitivity<a class="headerlink" href="#nonparametric-metrics-of-sensitivity" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="25%" />
@@ -262,7 +295,7 @@ Index</a>, or install it with:</p>
 </table>
 </div>
 <div class="section" id="nonparametric-metrics-of-response-bias">
-<h2>Nonparametric Metrics of Response Bias<a class="headerlink" href="#nonparametric-metrics-of-response-bias" title="Permalink to this headline">¶</a></h2>
+<h3>Nonparametric Metrics of Response Bias<a class="headerlink" href="#nonparametric-metrics-of-response-bias" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="25%" />
@@ -290,13 +323,13 @@ Index</a>, or install it with:</p>
 <td>Bmz: Zhang, J., and Mueller, S. T. (2005)</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="loglinear_bppd.html"><em>loglinear_bppd</em></a></td>
-<td>loglinear B&#8217;&#8216;D <a class="reference internal" href="loglinear_bppd_analysis.html"><em>Analysis of loglinear_bppd</em></a></td>
+<td>loglinear B&#8217;&#8216;D</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="probability-related-measures">
-<h2>Probability Related Measures<a class="headerlink" href="#probability-related-measures" title="Permalink to this headline">¶</a></h2>
+<h3>Probability Related Measures<a class="headerlink" href="#probability-related-measures" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="25%" />
@@ -312,13 +345,13 @@ Index</a>, or install it with:</p>
 <td>Matthews Correlation Coefficient</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="ppv.html"><em>ppv</em></a></td>
-<td>Positive Predictive Value (TP / (TP + FP))</td>
+<td>TP / (TP + FP) Positive Predictive Value</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="npv.html"><em>npv</em></a></td>
-<td>Negative Predictive Value (TN / (TN + FN))</td>
+<td>TN / (TN + FN) Negative Predictive Value</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="fdr.html"><em>fdr</em></a></td>
-<td>False Discovery Rate (FP / (TP + FP))</td>
+<td>FP / (TP + FP) False Discovery Rate</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="sensitivity.html"><em>sensitivity</em></a></td>
 <td>TP / (TP + FN) <tt class="docutils literal"><span class="pre">sdt.recall()</span> <span class="pre">&lt;==&gt;</span> <span class="pre">sdt.sensitivity()</span></tt></td>
@@ -343,7 +376,7 @@ Index</a>, or install it with:</p>
 </div>
 </div>
 <div class="section" id="sdt-object">
-<h1>SDT Object<a class="headerlink" href="#sdt-object" title="Permalink to this headline">¶</a></h1>
+<h2>SDT Object<a class="headerlink" href="#sdt-object" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
 <col width="25%" />
@@ -362,7 +395,7 @@ Index</a>, or install it with:</p>
 </table>
 </div>
 <div class="section" id="plotting">
-<h1>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h1>
+<h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
 <col width="25%" />
@@ -389,12 +422,41 @@ Index</a>, or install it with:</p>
 </tbody>
 </table>
 </div>
+<div class="section" id="analyses">
+<h2>Analyses<a class="headerlink" href="#analyses" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="sensitivity_scatter_matrix.html"><em>Sensitivity Scatter Matrix</em></a></td>
+<td>Scatter Matrix comparing <cite>dprime</cite>, <cite>aprime</cite>, <cite>amzs</cite>, <cite>accuracy</cite></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="prob_scatter_matrix.html"><em>Probability Scatter Matrix</em></a></td>
+<td>Scatter Matrix comparing <cite>mcc</cite>, <cite>f1</cite>, <cite>mutual_info</cite>, <cite>accuracy</cite></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="bias_scatter_matrix.html"><em>Bias Scatter Matrix</em></a></td>
+<td>Scatter Matrix comparing <cite>log(beta)</cite>, <cite>c</cite>, <cite>bppd</cite>, <cite>loglinear_bppd</cite>, <cite>log(bmz)</cite></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="loglinear_bppd_analysis.html"><em>Analysis of loglinear_bppd</em></a></td>
+<td>Addresses boundary sensitivity problems of bppd</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
+</div>
 </div>
 
 
