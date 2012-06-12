@@ -74,39 +74,31 @@ def mult_roc_plot(*args, **kwds):
     if isopleths in ['c', 'beta', 'c', 'bppd', 'bmz', 'bpp']:
         bias_func = getattr(sdt_metrics, isopleths)
 
-        # set levels
+        # get hard-coded parameters and build levels
         if isopleths == 'c':
             start,stop,step = -1.8,1.8,.2
-            
         elif 'bppd' in isopleths or isopleths == 'bpp':
             start,stop,step = -.9,.9,.1
-            
         elif isopleths in ['beta','bmz']:
             start,stop,step = .1,3.1,.2
+        levels=np.arange(start,stop,step)
 
-        levels = np.arange(start,stop,step)
-
-        X_, Y_, Z_ = [],[],[]
+        # build array data for pylab.contour
         N=100
-        for hi in xrange(N+1):
-            X_.append([])
-            Y_.append([])
-            Z_.append([])
-            
-            for fa in xrange(N+1):
-                Y_[-1].append(hi/N)
-                X_[-1].append(fa/N)
-                Z_[-1].append(bias_func(hi,N-hi,N-fa,fa))
+        F,H = np.meshgrid(range(N+1),range(N+1))
+        F,H = np.ravel(F),np.ravel(H)
+        Z = np.reshape(bias_func(H,N-H,N-F,F), (N+1,N+1))
+        F,H = np.reshape(F/N,(N+1,N+1)),np.reshape(H/N,(N+1,N+1))
 
+        # to have linewidths vary with the metric we have to
+        # loop through the levels and apply one contour level
+        # at a time
         for i,level in enumerate(levels):
             n = len(levels)
-            pylab.contour(np.array(X_), np.array(Y_), np.array(Z_),
-                          levels=[level],
-                          colors='k',
-                          linewidths=.6+2.4*((n-i)/n),
-                          alpha=.15)
+            pylab.contour(F,H,Z, levels=[level], colors='k',
+                          linewidths=.6+2.4*((n-i)/n), alpha=.15)
 
-        pylab.text(0.0,-.09,'%s'%metric, fontsize=10)
+        # some feedback
         pylab.text(0.0,-.13,'%s [%0.1f : %0.1f : %0.1f]'\
                    %(isopleths,start,stop,step), fontsize=9)
                     
@@ -203,37 +195,12 @@ def mult_roc_plot(*args, **kwds):
     if len(args) > 1:
         prop = matplotlib.font_manager.FontProperties(size=9)
         pylab.legend(loc='lower right', prop=prop)
+        pylab.text(0.0,-.09,'%s'%metric, fontsize=10)
+        
+    else:
+        pylab.text(0.0,-.09,'%s: %0.3f'%(metric, metric_val), fontsize=10)
     #
     # save and close
     #
     pylab.savefig(fname, dpi=dpi)
     pylab.close()
-
-def roc_plot(*args, **kwds):
-    """
-    Receiver Operating Characteristic (ROC) Plot
-
-       args:
-          1 argument:
-             sdt_metrics.SDT object
-          
-          2 arguments:
-             pHI
-             pFA
-             
-          4 arguments:
-             hit count
-             miss count
-             correction rejection count
-             false alarm count
-
-       kwds:
-          metric: dprime, aprime, amzs (default is dprime)
-          fname: outputname
-          dpi: resolution of plot
-    """
-    # wrap mult_roc_plot
-    if len(args) == 1:
-        mult_roc_plot([args[0],''], **kwds)    
-    else:
-        mult_roc_plot([args,''], **kwds)

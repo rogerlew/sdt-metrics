@@ -1,4 +1,5 @@
 from __future__ import print_function
+from __future__ import division
 
 # Copyright (c) 2012, Roger Lew [see LICENSE.txt]
 
@@ -35,6 +36,8 @@ def roc_plot(*args, **kwds):
 
        kwds:
           metric: dprime, aprime, amzs (default is dprime)
+          
+          isopleths: None, beta, c, bppd, bmz
           
           fname: outputname
           

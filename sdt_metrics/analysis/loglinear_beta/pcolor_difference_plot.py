@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import division
+
+# Copyright (c) 2012, Roger Lew [see LICENSE.txt]
+
 import inspect
 import pylab
 import numpy as np

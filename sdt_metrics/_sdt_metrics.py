@@ -29,6 +29,10 @@ Acknowledgements
   - singletonmixin module is courtesy of Gary Robinson and is
     in public domain
 
+  - ltqnorm was authored by Peter John Acklam
+
+  - contributors to Python, Numpy, SciPy, and Matplotlib
+
 Implementation Notes
 ====================
 
@@ -272,8 +276,28 @@ def _bmz(pHI,pFA):
         return ((1-pFA)**2+(1-pHI))/((1-pFA)**2+(1-pFA))
     else: # pHI == pFA
         return 1.
+
+def _bph(pHI,pFA):
+    if pFA > pHI:
+        return _bph(1-pHI, 1-pFA)
     
-    
+    if pHI <= 1 - pFA:
+        num = pFA*(1-pFA)
+        dem = pHI*(1-pHI)
+
+        if dem == 0:
+            return 1.
+        else:
+            return 1. - num/dem
+    else:
+        num = pHI*(1-pHI)
+        dem = pFA*(1-pFA)
+
+        if dem == 0:
+            return -1.
+        else:
+            return num/dem - 1.
+        
 ##
 ## SDT Class
 ##    
@@ -601,23 +625,8 @@ class SDT(dict):
                  of five measures of response bias.
         """
         pHI,pFA = self.p(HI),self.p(FA)
-        if pHI <= 1 - pFA:
-            num = pFA*(1-pFA)
-            dem = pHI*(1-pHI)
+        return _bph(pHI,pFA)
 
-            if dem == 0:
-                return 1.
-            else:
-                return 1. - num/dem
-        else:
-            num = pHI*(1-pHI)
-            dem = pFA*(1-pFA)
-
-            if dem == 0:
-                return -1.
-            else:
-                return num/dem - 1.
-            
     def bppd(self):
         """
         B''d: nonparametric measure of response bias

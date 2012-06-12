@@ -427,12 +427,29 @@ class Test_plotting_roc_curve(unittest.TestCase):
 
     def test2(self):
         """given probabilities"""
-        sdt_metrics.plotting.roc_plot(.67, .43)
+        sdt_metrics.plotting.roc_plot(.67, .43,
+                                      metric='amzs',
+                                      fname='roc_example01.png')
+        
+    def test3(self):
+        """given an counts"""
+        sdt_metrics.plotting.roc_plot(116, 30, 50, 50,
+                                      metric='aprime',
+                                      fname='roc_example02.png')
         
     def test4(self):
-        """given an counts"""
-        sdt_metrics.plotting.roc_plot(116, 30, 50, 50, isopleths='beta')
+        """given SDT object"""
+        sdt_metrics.plotting.roc_plot(SDT(HI=251, MI=245, CR=264, FA=240),
+                                      fname='roc_example03.png')
 
+    def test4(self):
+        """given isopleth"""
+        sdt_metrics.plotting.roc_plot(116, 30, 50, 50,
+                                      metric='dprime',
+                                      isopleths='beta',
+                                      fname='roc_example04.png')
+
+        
 class Test_plotting_mult_roc_curve(unittest.TestCase):
     def test1(self):
         sdt_obj = SDT(HI=116, MI=30, CR=323, FA=80)
@@ -449,12 +466,12 @@ class Test_plotting_mult_roc_curve(unittest.TestCase):
         sdt_obj = SDT(HI=116, MI=30, CR=323, FA=80)
         sdt_probs = (.97,.22)
         sdt_counts = (76,67,80,65)
-        sdt_metrics.plotting.mult_roc_plot((sdt_obj,  'from SDT object'),
-                                           (sdt_probs, 'from probs'),
-                                           (sdt_counts, 'from counts'),
-                                           fname = 'mult_roc_example.png',
-                                           metric = 'amzs',
-                                           isopleths='bmz')
+        sdt_metrics.plotting.mult_roc_plot(((.91,.40), 'A'),
+                                           ((.76,.56), 'B'),
+                                           ((.84,.67), 'C'),
+                                           metric='amzs',
+                                           isopleths='bppd',
+                                           fname = 'mult_roc_example02.png')
         
 def suite():
     return unittest.TestSuite((
