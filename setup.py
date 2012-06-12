@@ -6,7 +6,7 @@ from setuptools import setup
 
 
 setup(name='sdt_metrics',
-    version='0.1.2.0',
+    version='0.1.2.1',
     description='Signal Detection Theory (SDT) metrics for Python',
     author='Roger Lew',
     author_email='rogerlew@gmail.com',
