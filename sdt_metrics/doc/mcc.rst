@@ -5,11 +5,16 @@ mcc
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/mcc.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/mcc.png>`] 
+[:download:`pdf <_static/mcc.pdf>`] 
+
+.. image:: _static/mcc__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: mcc.png
+    :height: 365px
+    :alt: mcc__lores.png
     
 .. autoclass:: sdt_metrics.mcc
    :members: direct, prob, __call__

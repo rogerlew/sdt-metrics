@@ -5,11 +5,16 @@ bmz
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/log(bmz).png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/bmz.png>`] 
+[:download:`pdf <_static/bmz.pdf>`] 
+
+.. image:: _static/bmz__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: log(bmz).png
+    :height: 365px
+    :alt: bmz__lores.png
     
 .. autoclass:: sdt_metrics.bmz
    :members: direct, prob, __call__

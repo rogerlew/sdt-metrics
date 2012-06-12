@@ -5,11 +5,16 @@ aprime
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/aprime.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/aprime.png>`] 
+[:download:`pdf <_static/aprime.pdf>`] 
+
+.. image:: _static/aprime__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: aprime.png
+    :height: 365px
+    :alt: aprime__lores.png
     
 .. autoclass:: sdt_metrics.aprime
    :members: direct, prob, __call__

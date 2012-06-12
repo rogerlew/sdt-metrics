@@ -5,11 +5,16 @@ sensitivity
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/sensitivity.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/sensitivity.png>`] 
+[:download:`pdf <_static/sensitivity.pdf>`] 
+
+.. image:: _static/sensitivity__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: sensitivity.png
+    :height: 365px
+    :alt: sensitivity__lores.png
     
 .. autoclass:: sdt_metrics.sensitivity
    :members: direct, __call__

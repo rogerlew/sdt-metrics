@@ -5,11 +5,16 @@ recall
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/recall.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/recall.png>`] 
+[:download:`pdf <_static/recall.pdf>`] 
+
+.. image:: _static/recall__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: recall.png
+    :height: 365px
+    :alt: recall__lores.png
     
 .. autoclass:: sdt_metrics.recall
    :members: direct, __call__

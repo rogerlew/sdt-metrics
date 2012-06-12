@@ -5,11 +5,16 @@ mutual_info
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/mutual_info.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/mutual_info.png>`] 
+[:download:`pdf <_static/mutual_info.pdf>`] 
+
+.. image:: _static/mutual_info__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: mutual_info.png
+    :height: 365px
+    :alt: mutual_info__lores.png
     
 .. autoclass:: sdt_metrics.mutual_info
    :members: direct, __call__

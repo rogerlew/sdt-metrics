@@ -5,11 +5,16 @@ loglinear_c
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/loglinear_c.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/loglinear_c.png>`] 
+[:download:`pdf <_static/loglinear_c.pdf>`] 
+
+.. image:: _static/loglinear_c__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: loglinear_c.png
+    :height: 365px
+    :alt: loglinear_c__lores.png
     
 .. autoclass:: sdt_metrics.loglinear_c
    :members: direct, __call__

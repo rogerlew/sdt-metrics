@@ -5,11 +5,16 @@ accuracy
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/accuracy.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/accuracy.png>`] 
+[:download:`pdf <_static/accuracy.pdf>`] 
+
+.. image:: _static/accuracy__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: accuracy.png
+    :height: 365px
+    :alt: accuracy__lores.png
     
 .. autoclass:: sdt_metrics.accuracy
    :members: direct, prob, __call__

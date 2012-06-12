@@ -5,11 +5,16 @@ loglinear_beta
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/loglinear_beta.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/loglinear_beta.png>`] 
+[:download:`pdf <_static/loglinear_beta.pdf>`] 
+
+.. image:: _static/loglinear_beta__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: loglinear_beta.png
+    :height: 365px
+    :alt: loglinear_beta__lores.png
     
 .. autoclass:: sdt_metrics.loglinear_beta
    :members: direct, __call__

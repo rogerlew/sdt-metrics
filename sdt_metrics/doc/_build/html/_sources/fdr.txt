@@ -5,11 +5,16 @@ fdr
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/fdr.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/fdr.png>`] 
+[:download:`pdf <_static/fdr.pdf>`] 
+
+.. image:: _static/fdr__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: fdr.png
+    :height: 365px
+    :alt: fdr__lores.png
     
 .. autoclass:: sdt_metrics.fdr
    :members: direct, __call__

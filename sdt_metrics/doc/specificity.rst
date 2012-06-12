@@ -5,11 +5,16 @@ specificity
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/specificity.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/specificity.png>`] 
+[:download:`pdf <_static/specificity.pdf>`] 
+
+.. image:: _static/specificity__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: specificity.png
+    :height: 365px
+    :alt: specificity__lores.png
     
 .. autoclass:: sdt_metrics.specificity
    :members: direct, __call__

@@ -5,11 +5,16 @@ ppv
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/ppv.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/ppv.png>`] 
+[:download:`pdf <_static/ppv.pdf>`] 
+
+.. image:: _static/ppv__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: ppv.png
+    :height: 365px
+    :alt: ppv__lores.png
     
 .. autoclass:: sdt_metrics.ppv
    :members: direct, __call__

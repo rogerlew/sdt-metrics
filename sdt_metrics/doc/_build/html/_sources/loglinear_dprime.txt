@@ -5,11 +5,16 @@ loglinear_dprime
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/loglinear_dprime.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/loglinear_dprime.png>`] 
+[:download:`pdf <_static/loglinear_dprime.pdf>`] 
+
+.. image:: _static/loglinear_dprime__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: loglinear_dprime.png
+    :height: 365px
+    :alt: loglinear_dprime__lores.png
     
 .. autoclass:: sdt_metrics.loglinear_dprime
    :members: direct, __call__

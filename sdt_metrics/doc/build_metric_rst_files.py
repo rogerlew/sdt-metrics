@@ -9,11 +9,16 @@ $metric
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/$validation_plot 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/${metric}.png>`] 
+[:download:`pdf <_static/${metric}.pdf>`] 
+
+.. image:: _static/${metric}__lores.png 
+    :width: 700px
     :align: center
-    :height: 400px
-    :alt: $validation_plot
+    :height: 341px
+    :alt: ${metric}__lores.png
     
 .. autoclass:: sdt_metrics.$metric
    :members: $members""")
@@ -52,15 +57,14 @@ for metric in metrics:
     else:
         members = 'direct, __call__'
 
-    if metric in ['beta','bmz']:
-        validation_plot = 'log(%s).png'%metric
-    elif metric is 'bph':
-        validation_plot = 'sgn(bph)log(abs(bph+1)).png'
-    else:
-        validation_plot = '%s.png'%metric
+##    if metric in ['beta','bmz']:
+##        validation_plot = 'log(%s).png'%metric
+##    elif metric is 'bph':
+##        validation_plot = 'sgn(bph)log(abs(bph+1)).png'
+##    else:
+##        validation_plot = '%s.png'%metric
                 
     with open('%s.rst'%metric, 'wb') as f:
         f.write(template.substitute(metric=metric,
-                                    members=members,
-                                    validation_plot=validation_plot))
+                                    members=members))
     

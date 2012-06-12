@@ -5,11 +5,16 @@ bph
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/sgn(bph)log(abs(bph+1)).png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/bph.png>`] 
+[:download:`pdf <_static/bph.pdf>`] 
+
+.. image:: _static/bph__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: sgn(bph)log(abs(bph+1)).png
+    :height: 365px
+    :alt: bph__lores.png
     
 .. autoclass:: sdt_metrics.bph
    :members: direct, prob, __call__

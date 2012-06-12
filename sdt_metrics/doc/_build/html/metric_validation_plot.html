@@ -137,18 +137,14 @@ table.citation td.label{
 <h1>metric_validation_plot<a class="headerlink" href="#metric-validation-plot" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="sdt_metrics.plotting.metric_validation_plot">
-<tt class="descclassname">sdt_metrics.plotting.</tt><tt class="descname">metric_validation_plot</tt><big>(</big><em>metric_name</em>, <em>N=100</em>, <em>log=False</em>, <em>bph=False</em><big>)</big><a class="headerlink" href="#sdt_metrics.plotting.metric_validation_plot" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">sdt_metrics.plotting.</tt><tt class="descname">metric_validation_plot</tt><big>(</big><em>metric_name</em>, <em>levels=None</em>, <em>N=100</em>, <em>log=False</em><big>)</big><a class="headerlink" href="#sdt_metrics.plotting.metric_validation_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>produces a pcolor plot of the metric over ROC space</p>
 <dl class="docutils">
 <dt>arg:</dt>
 <dd>metric_name: string defining the metric to plot</dd>
 <dt>kwds:</dt>
 <dd><p class="first">N: number of intervals for probability axes</p>
-<p>log: specifies whether log transform should be applied</p>
-<dl class="last docutils">
-<dt>bph: specifies the sgn(x)*log(abs(x)+1) transform</dt>
-<dd>used for bph</dd>
-</dl>
+<p class="last">log: specifies whether log transform should be applied</p>
 </dd>
 </dl>
 </dd></dl>

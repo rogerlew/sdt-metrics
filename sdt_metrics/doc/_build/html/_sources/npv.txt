@@ -5,11 +5,16 @@ npv
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/npv.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/npv.png>`] 
+[:download:`pdf <_static/npv.pdf>`] 
+
+.. image:: _static/npv__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: npv.png
+    :height: 365px
+    :alt: npv__lores.png
     
 .. autoclass:: sdt_metrics.npv
    :members: direct, __call__

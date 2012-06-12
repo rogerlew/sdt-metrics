@@ -5,11 +5,16 @@ b
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/b.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/b.png>`] 
+[:download:`pdf <_static/b.pdf>`] 
+
+.. image:: _static/b__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: b.png
+    :height: 365px
+    :alt: b__lores.png
     
 .. autoclass:: sdt_metrics.b
    :members: direct, prob, __call__

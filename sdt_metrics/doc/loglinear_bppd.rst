@@ -5,11 +5,16 @@ loglinear_bppd
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/loglinear_bppd.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/loglinear_bppd.png>`] 
+[:download:`pdf <_static/loglinear_bppd.pdf>`] 
+
+.. image:: _static/loglinear_bppd__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: loglinear_bppd.png
+    :height: 365px
+    :alt: loglinear_bppd__lores.png
     
 .. autoclass:: sdt_metrics.loglinear_bppd
    :members: direct, __call__

@@ -5,11 +5,16 @@ precision
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/precision.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/precision.png>`] 
+[:download:`pdf <_static/precision.pdf>`] 
+
+.. image:: _static/precision__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: precision.png
+    :height: 365px
+    :alt: precision__lores.png
     
 .. autoclass:: sdt_metrics.precision
    :members: direct, __call__

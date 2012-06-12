@@ -5,11 +5,16 @@ amzs
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/amzs.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/amzs.png>`] 
+[:download:`pdf <_static/amzs.pdf>`] 
+
+.. image:: _static/amzs__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: amzs.png
+    :height: 365px
+    :alt: amzs__lores.png
     
 .. autoclass:: sdt_metrics.amzs
    :members: direct, prob, __call__

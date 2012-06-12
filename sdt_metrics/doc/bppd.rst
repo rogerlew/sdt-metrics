@@ -5,11 +5,16 @@ bppd
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/bppd.png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/bppd.png>`] 
+[:download:`pdf <_static/bppd.pdf>`] 
+
+.. image:: _static/bppd__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: bppd.png
+    :height: 365px
+    :alt: bppd__lores.png
     
 .. autoclass:: sdt_metrics.bppd
    :members: direct, prob, __call__

@@ -5,11 +5,16 @@ beta
 
 .. currentmodule:: sdt_metrics
 
-.. image:: _static/log(beta).png 
-    :width: 500px
+
+Download 
+[:download:`hi-res <_static/beta.png>`] 
+[:download:`pdf <_static/beta.pdf>`] 
+
+.. image:: _static/beta__lores.png 
+    :width: 750px
     :align: center
-    :height: 400px
-    :alt: log(beta).png
+    :height: 365px
+    :alt: beta__lores.png
     
 .. autoclass:: sdt_metrics.beta
    :members: direct, prob, __call__
