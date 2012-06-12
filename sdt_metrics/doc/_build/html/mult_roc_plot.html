@@ -105,6 +105,7 @@ table.citation td.label{
   <ul>
 <li><a class="reference internal" href="#">mult_roc_plot</a><ul>
 <li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#example-with-amzs-and-bppd">Example with amzs and bppd</a></li>
 </ul>
 </li>
 </ul>
@@ -169,6 +170,7 @@ false alarm count</dd>
 </dd>
 <dt>kwds:</dt>
 <dd><p class="first">metric: dprime, aprime, amzs (default is dprime)</p>
+<p>isopleths: None, beta, c, bppd, bmz</p>
 <p>fname: outputname</p>
 <p class="last">dpi: resolution of plot</p>
 </dd>
@@ -184,10 +186,23 @@ false alarm count</dd>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mult_roc_plot</span><span class="p">((</span><span class="n">sdt_obj</span><span class="p">,</span>  <span class="s">&#39;from SDT object&#39;</span><span class="p">),</span>
 <span class="go">                  (sdt_probs, &#39;from probs&#39;),</span>
 <span class="go">                  (sdt_counts, &#39;from counts&#39;),</span>
-<span class="go">                  fname = &#39;mult_roc_example.png&#39;)</span>
+<span class="go">                  isopleths=&#39;c&#39;,</span>
+<span class="go">                  fname=&#39;mult_roc_example.png&#39;)</span>
 </pre></div>
 </div>
-<img alt="mult_roc_example.png" class="align-center" src="_images/mult_roc_example.png" style="width: 400px; height: 400px;" />
+<img alt="mult_roc_example.png" class="align-center" src="_images/mult_roc_example.png" style="width: 600px; height: 600px;" />
+</div>
+<div class="section" id="example-with-amzs-and-bppd">
+<h2>Example with amzs and bppd<a class="headerlink" href="#example-with-amzs-and-bppd" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mult_roc_plot</span><span class="p">(((</span><span class="o">.</span><span class="mi">91</span><span class="p">,</span><span class="o">.</span><span class="mi">40</span><span class="p">),</span> <span class="s">&#39;A&#39;</span><span class="p">),</span>
+<span class="go">                  ((.76,.56), &#39;B&#39;),</span>
+<span class="go">                  ((.84,.67), &#39;C&#39;),</span>
+<span class="go">                  metric=&#39;amzs&#39;,</span>
+<span class="go">                  isopleths=&#39;bppd&#39;,</span>
+<span class="go">                  fname=&#39;mult_roc_example02.png&#39;)</span>
+</pre></div>
+</div>
+<img alt="mult_roc_example02.png" class="align-center" src="_images/mult_roc_example02.png" style="width: 600px; height: 600px;" />
 </div>
 </div>
 

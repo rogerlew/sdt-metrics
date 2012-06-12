@@ -1,7 +1,9 @@
 from __future__ import print_function
+from __future__ import division
 
 # Copyright (c) 2012, Roger Lew [see LICENSE.txt]
 
+import matplotlib
 import pylab
 import numpy as np
 import scipy
@@ -38,10 +40,13 @@ def mult_roc_plot(*args, **kwds):
 
        kwds:
           metric: dprime, aprime, amzs (default is dprime)
+       
+          isopleths: None, beta, c, bppd, bmz
           
           fname: outputname
           
           dpi: resolution of plot
+
     """
     #
     # bookkeeping
@@ -50,17 +55,64 @@ def mult_roc_plot(*args, **kwds):
     dpi = kwds.get('dpi',150)
     metric = kwds.get('metric','dprime')
     metric_func = getattr(sdt_metrics, metric)
-
+    
+    isopleths = kwds.get('isopleths',None)
+    isopleth_labels = kwds.get('isopleths',True)
+    
     #
     # initialize the figure
     #
+    matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
     pylab.figure(figsize=(5.5,5.5))
-    pylab.subplots_adjust(left=.1, bottom=.1, top=.95, right=.95)
+    pylab.subplots_adjust(left=.12, bottom=.12, top=.96, right=.96)
+        
     pylab.plot([0,1],[0,1],'k:') # dotted diagonal line
-    
+
+    #
+    # plot bias isopleths
+    #        
+    if isopleths in ['c', 'beta', 'c', 'bppd', 'bmz', 'bpp']:
+        bias_func = getattr(sdt_metrics, isopleths)
+
+        # set levels
+        if isopleths == 'c':
+            start,stop,step = -1.8,1.8,.2
+            
+        elif 'bppd' in isopleths or isopleths == 'bpp':
+            start,stop,step = -.9,.9,.1
+            
+        elif isopleths in ['beta','bmz']:
+            start,stop,step = .1,3.1,.2
+
+        levels = np.arange(start,stop,step)
+
+        X_, Y_, Z_ = [],[],[]
+        N=100
+        for hi in xrange(N+1):
+            X_.append([])
+            Y_.append([])
+            Z_.append([])
+            
+            for fa in xrange(N+1):
+                Y_[-1].append(hi/N)
+                X_[-1].append(fa/N)
+                Z_[-1].append(bias_func(hi,N-hi,N-fa,fa))
+
+        for i,level in enumerate(levels):
+            n = len(levels)
+            pylab.contour(np.array(X_), np.array(Y_), np.array(Z_),
+                          levels=[level],
+                          colors='k',
+                          linewidths=.6+2.4*((n-i)/n),
+                          alpha=.15)
+
+        pylab.text(0.0,-.09,'%s'%metric, fontsize=10)
+        pylab.text(0.0,-.13,'%s [%0.1f : %0.1f : %0.1f]'\
+                   %(isopleths,start,stop,step), fontsize=9)
+                    
     # used to change line plotting styles
-    # gives 84 unique combinations. That should be enough, having more than that
-    # would be pretty difficult to comprehend
+    # gives 84 unique combinations. That should be enough, having
+    # more than that would be pretty difficult to comprehend
     colors = 'bgrcmyk'
     linestyles = ['-','--','-.',':']
     markerstyles = 'hvs'
@@ -130,14 +182,14 @@ def mult_roc_plot(*args, **kwds):
         # just for the legend
         # (don't need to do this when there is only one arg supplied because
         # the legend doesn't show        
-        if len(args) > 1:
+        if label != '':
             pylab.plot([-1,-2],[-1,-2],
                         alpha = .6,
                         c=colors[j%len(colors)],
                         ls=linestyles[j%len(linestyles)],
                         marker=markerstyles[j%len(markerstyles)],
                         markeredgewidth=0.,
-                        label=label)
+                        label=label+': %0.3f'%metric_val)
 
     #
     # do some final formatting
@@ -145,8 +197,12 @@ def mult_roc_plot(*args, **kwds):
     pylab.xlim([0,1])
     pylab.ylim([0,1])
 
+    pylab.xlabel('p(FA)')
+    pylab.ylabel('p(HI)')
+
     if len(args) > 1:
-        pylab.legend(loc='lower right')
+        prop = matplotlib.font_manager.FontProperties(size=9)
+        pylab.legend(loc='lower right', prop=prop)
     #
     # save and close
     #

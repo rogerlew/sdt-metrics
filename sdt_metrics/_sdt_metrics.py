@@ -372,8 +372,8 @@ class SDT(dict):
                                 raise KeyError(elem)
                             self[elem] = self.get(elem, 0) + count
             else:
-                raise TypeError(
-                        "'%s' object is not iterable" % type(iterable).__name__)
+                raise TypeError("'%s' object is not iterable"
+                                % type(iterable).__name__)
         if kwds:
             self.update(kwds)
             
@@ -414,8 +414,8 @@ class SDT(dict):
                                 raise KeyError(elem)
                             self[elem] = self.get(elem, 0) - count
             else:
-                raise TypeError(
-                        "'%s' object is not iterable" % type(iterable).__name__)
+                raise TypeError("'%s' object is not iterable"
+                                % type(iterable).__name__)
         if kwds:
             self.subtract(kwds)
 
@@ -427,7 +427,9 @@ class SDT(dict):
         return self.__class__, (dict(self),)
 
     def __delitem__(self, elem):
-        """Like dict.__delitem__() but does not raise KeyError for missing values."""
+        """
+        Like dict.__delitem__() but does not raise KeyError for missing values.
+        """
         if elem in self:
             super(SDT, self).__delitem__(elem)
 
@@ -1068,7 +1070,7 @@ class SDT(dict):
         return mi
     
 #
-# Code to Implement "direct" functions
+# Code to Implement "direct" and "prob" methods
 #
 
 

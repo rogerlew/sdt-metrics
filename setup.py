@@ -6,7 +6,7 @@ from setuptools import setup
 
 
 setup(name='sdt_metrics',
-    version='0.1.1.1',
+    version='0.1.2.0',
     description='Signal Detection Theory (SDT) metrics for Python',
     author='Roger Lew',
     author_email='rogerlew@gmail.com',
@@ -18,6 +18,7 @@ setup(name='sdt_metrics',
                  "License :: OSI Approved :: BSD License",
                  "Natural Language :: English",
                  "Programming Language :: Python :: 2.7",
+                 "Programming Language :: Python :: 3.2",
                  "Topic :: Scientific/Engineering :: Bio-Informatics",
                  "Topic :: Scientific/Engineering :: Information Analysis",
                  "Topic :: Scientific/Engineering :: Mathematics",

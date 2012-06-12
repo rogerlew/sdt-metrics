@@ -15,10 +15,27 @@ Example
     >>> mult_roc_plot((sdt_obj,  'from SDT object'),
                       (sdt_probs, 'from probs'),
                       (sdt_counts, 'from counts'),
-                      fname = 'mult_roc_example.png')
+                      isopleths='c',
+                      fname='mult_roc_example.png')
     
 .. image:: _static/mult_roc_example.png
-    :width: 400px
+    :width: 600px
     :align: center
-    :height: 400px
+    :height: 600px
     :alt: mult_roc_example.png
+    
+Example with amzs and bppd
+----------------------------------
+
+    >>> mult_roc_plot(((.91,.40), 'A'),
+                      ((.76,.56), 'B'),
+                      ((.84,.67), 'C'),
+                      metric='amzs',
+                      isopleths='bppd',
+                      fname='mult_roc_example02.png')
+    
+.. image:: _static/mult_roc_example02.png
+    :width: 600px
+    :align: center
+    :height: 600px
+    :alt: mult_roc_example02.png

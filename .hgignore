@@ -4,3 +4,4 @@ syntax: glob
 dist/*
 sdt_metrics.egg-info/*
 sdt_metrics/doc/_build/html/*doc.zip
+PKG-INFO

@@ -4,7 +4,7 @@ Analysis of loglinear_bppd
 Abstract
 --------
 
-B''D is generally acknowledgeed as being the most preferred and
+B''D is generally acknowledged as being the preferred and
 robust nonparametric measure of decision bias. Despite its popularity,
 B''D has an Achilles' heel with boundary cases where it loses sensitivity.
 Applying a loglinear transform to B''D fixes the boundary cases and is

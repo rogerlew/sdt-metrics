@@ -107,6 +107,7 @@ table.citation td.label{
 <li><a class="reference internal" href="#producing-plot-from-probabilities">Producing plot from probabilities</a></li>
 <li><a class="reference internal" href="#producing-plot-from-frequencies">Producing plot from frequencies</a></li>
 <li><a class="reference internal" href="#producing-plot-from-sdt-object">Producing plot from <tt class="docutils literal"><span class="pre">SDT</span></tt> Object</a></li>
+<li><a class="reference internal" href="#specifiying-bias-isopleths-contours">Specifiying Bias Isopleths (Contours)</a></li>
 </ul>
 </li>
 </ul>
@@ -166,6 +167,7 @@ false alarm count</dd>
 </dd>
 <dt>kwds:</dt>
 <dd><p class="first">metric: dprime, aprime, amzs (default is dprime)</p>
+<p>isopleths: None, beta, c, bppd, bmz</p>
 <p>fname: outputname</p>
 <p class="last">dpi: resolution of plot</p>
 </dd>
@@ -174,19 +176,21 @@ false alarm count</dd>
 
 <div class="section" id="producing-plot-from-probabilities">
 <h2>Producing plot from probabilities<a class="headerlink" href="#producing-plot-from-probabilities" title="Permalink to this headline">¶</a></h2>
+<p>ROC plots can be generated from dprime, aprime, or amzs</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdt_metrics.plotting</span> <span class="kn">import</span> <span class="n">roc_plot</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="o">.</span><span class="mi">67</span><span class="p">,</span> <span class="o">.</span><span class="mi">43</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s">&#39;amzs&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;roc_example01.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="roc_example01.png" class="align-center" src="_images/roc_example01.png" style="width: 400px; height: 400px;" />
+<img alt="roc_example01.png" class="align-center" src="_images/roc_example01.png" style="width: 600px; height: 600px;" />
 </div>
 <div class="section" id="producing-plot-from-frequencies">
 <h2>Producing plot from frequencies<a class="headerlink" href="#producing-plot-from-frequencies" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdt_metrics.plotting</span> <span class="kn">import</span> <span class="n">roc_plot</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="mi">134</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">345</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;roc_example01.png&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="mi">116</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>
+<span class="go">             metric=&#39;aprime&#39;,</span>
+<span class="go">             fname=&#39;roc_example02.png&#39;)</span>
 </pre></div>
 </div>
-<img alt="roc_example02.png" class="align-center" src="_images/roc_example02.png" style="width: 400px; height: 400px;" />
+<img alt="roc_example02.png" class="align-center" src="_images/roc_example02.png" style="width: 600px; height: 600px;" />
 </div>
 <div class="section" id="producing-plot-from-sdt-object">
 <h2>Producing plot from <tt class="xref py py-class docutils literal"><span class="pre">SDT</span></tt> Object<a class="headerlink" href="#producing-plot-from-sdt-object" title="Permalink to this headline">¶</a></h2>
@@ -198,7 +202,23 @@ false alarm count</dd>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="n">sdt_obj</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;roc_example03.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="roc_example03.png" class="align-center" src="_images/roc_example03.png" style="width: 400px; height: 400px;" />
+<img alt="roc_example03.png" class="align-center" src="_images/roc_example03.png" style="width: 600px; height: 600px;" />
+</div>
+<div class="section" id="specifiying-bias-isopleths-contours">
+<h2>Specifiying Bias Isopleths (Contours)<a class="headerlink" href="#specifiying-bias-isopleths-contours" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>isopleths</cite> keyword allows specifying isopleths for either
+<cite>beta</cite>, <cite>c</cite>, <cite>bppd</cite>, or <cite>bmz</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="mi">116</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>
+<span class="go">             metric=&#39;dprime&#39;,</span>
+<span class="go">             isopleths=&#39;beta&#39;,</span>
+<span class="go">             fname=&#39;roc_example04.png&#39;)</span>
+</pre></div>
+</div>
+<img alt="roc_example04.png" class="align-center" src="_images/roc_example04.png" style="width: 600px; height: 600px;" />
+<p>The values inside the brackets specify [<cite>start</cite> : <cite>stop</cite> : <cite>step</cite>]. On
+The figure the thinner lines denot larger values (going up hill). This
+is a little counterintuitive but the uphill gradients tend to be steeper
+and having thinner lines makes the plots look better.</p>
 </div>
 </div>
 
