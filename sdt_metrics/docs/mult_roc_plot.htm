@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mult_roc_plot &mdash; sdt_metrics v 0.1.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'v 0.1.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.htm',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sdt_metrics v 0.1.1.1 documentation" href="index.htm" />
+    <link rel="next" title="metric_validation_plot" href="metric_validation_plot.htm" />
+    <link rel="prev" title="roc_plot" href="roc_plot.htm" />
+ 
+<style type="text/css">
+  table.right { float: right; margin-left: 20px; }
+  table.right td { border: 1px solid #ccc; }
+
+/* These are for the citation customization
+   
+   I don't like using long variable names but don't want
+   to figure out what is in the namespace */
+div.specialfooter {
+    height:25px;
+    background-color: #E3EFF1;
+    color: #86989B;
+    padding: 3px 8px 3px 8px;
+    clear: both;
+    font-size: 0.8em;
+}
+div.specialfooter a {
+    color: #86989B;
+    text-decoration: underline;
+}
+div.specialfooterleft {
+    float:left;
+    width:60%
+    padding-left:15px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:left;
+}
+div.specialfooterright {
+    float:right;
+    width:40%
+    padding-right:13px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:right;
+}
+table.docutils {
+    width:100%
+}
+
+table.citation td.label{
+    width:150px;
+}
+
+</style>
+
+  </head>
+  <body>
+<div style="background-color: white; text-align: center; padding: 10px 10px 15px 15px; ">
+<img src="_static/sdt_metrics_logo.png" alt="sdt-metrics logo" />
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.htm" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="metric_validation_plot.htm" title="metric_validation_plot"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="roc_plot.htm" title="roc_plot"
+             accesskey="P">previous</a> |</li>
+        <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
+        <li><a href="index.htm">Documentation</a>
+          &raquo;</li>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.htm">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">mult_roc_plot</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#example-with-amzs-and-bppd">Example with amzs and bppd</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="roc_plot.htm"
+                        title="previous chapter">roc_plot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="metric_validation_plot.htm"
+                        title="next chapter">metric_validation_plot</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mult_roc_plot.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.htm" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mult-roc-plot">
+<h1>mult_roc_plot<a class="headerlink" href="#mult-roc-plot" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sdt_metrics.plotting.mult_roc_plot">
+<tt class="descclassname">sdt_metrics.plotting.</tt><tt class="descname">mult_roc_plot</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#sdt_metrics.plotting.mult_roc_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple Receiver Operating Characteristic (ROC) curvesPlot</p>
+<dl class="docutils">
+<dt>args:</dt>
+<dd><p class="first">each arg should contain pairs of data and labels
+The data can be specified in 3 ways:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>1 argument:</dt>
+<dd>sdt_metrics.SDT object</dd>
+<dt>2 arguments:</dt>
+<dd>pHI
+pFA</dd>
+<dt>4 arguments:</dt>
+<dd>hit count
+miss count
+correction rejection count
+false alarm count</dd>
+</dl>
+</div></blockquote>
+<p class="last">labels should be strings and could contain latex</p>
+</dd>
+<dt>kwds:</dt>
+<dd><p class="first">metric: dprime, aprime, amzs (default is dprime)</p>
+<p>isopleths: None, beta, c, bppd, bmz</p>
+<p>fname: outputname</p>
+<p class="last">dpi: resolution of plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdt_metrics.plotting</span> <span class="kn">import</span> <span class="n">mult_roc_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdt_obj</span> <span class="o">=</span> <span class="n">SDT</span><span class="p">(</span><span class="n">HI</span><span class="o">=</span><span class="mi">116</span><span class="p">,</span> <span class="n">MI</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">CR</span><span class="o">=</span><span class="mi">323</span><span class="p">,</span> <span class="n">FA</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdt_probs</span> <span class="o">=</span> <span class="p">(</span><span class="o">.</span><span class="mi">97</span><span class="p">,</span><span class="o">.</span><span class="mi">22</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdt_counts</span> <span class="o">=</span> <span class="p">(</span><span class="mi">76</span><span class="p">,</span><span class="mi">67</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">65</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mult_roc_plot</span><span class="p">((</span><span class="n">sdt_obj</span><span class="p">,</span>  <span class="s">&#39;from SDT object&#39;</span><span class="p">),</span>
+<span class="go">                  (sdt_probs, &#39;from probs&#39;),</span>
+<span class="go">                  (sdt_counts, &#39;from counts&#39;),</span>
+<span class="go">                  isopleths=&#39;c&#39;,</span>
+<span class="go">                  fname=&#39;mult_roc_example.png&#39;)</span>
+</pre></div>
+</div>
+<img alt="mult_roc_example.png" class="align-center" src="_images/mult_roc_example.png" style="width: 600px; height: 600px;" />
+</div>
+<div class="section" id="example-with-amzs-and-bppd">
+<h2>Example with amzs and bppd<a class="headerlink" href="#example-with-amzs-and-bppd" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">mult_roc_plot</span><span class="p">(((</span><span class="o">.</span><span class="mi">91</span><span class="p">,</span><span class="o">.</span><span class="mi">40</span><span class="p">),</span> <span class="s">&#39;A&#39;</span><span class="p">),</span>
+<span class="go">                  ((.76,.56), &#39;B&#39;),</span>
+<span class="go">                  ((.84,.67), &#39;C&#39;),</span>
+<span class="go">                  metric=&#39;amzs&#39;,</span>
+<span class="go">                  isopleths=&#39;bppd&#39;,</span>
+<span class="go">                  fname=&#39;mult_roc_example02.png&#39;)</span>
+</pre></div>
+</div>
+<img alt="mult_roc_example02.png" class="align-center" src="_images/mult_roc_example02.png" style="width: 600px; height: 600px;" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.htm" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="metric_validation_plot.htm" title="metric_validation_plot"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="roc_plot.htm" title="roc_plot"
+             >previous</a> |</li>
+        <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
+        <li><a href="index.htm">Documentation</a>
+          &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Roger Lew.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

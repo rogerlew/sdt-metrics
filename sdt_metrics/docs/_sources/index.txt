@@ -128,7 +128,7 @@ Parametric Metrics of Sensitivity
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. the widths defines proportions between the columns
-   added table.docutils {width:100%;} to layout.html in _templates
+   added table.docutils {width:100%;} to layout.htm in _templates
    to make tables fill horizontally
 
 .. csv-table::

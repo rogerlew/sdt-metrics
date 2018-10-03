@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>roc_plot &mdash; sdt_metrics v 0.1.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     'v 0.1.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.htm',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="sdt_metrics v 0.1.1.1 documentation" href="index.htm" />
+    <link rel="next" title="mult_roc_plot" href="mult_roc_plot.htm" />
+    <link rel="prev" title="poc_plot" href="poc_plot.htm" />
+ 
+<style type="text/css">
+  table.right { float: right; margin-left: 20px; }
+  table.right td { border: 1px solid #ccc; }
+
+/* These are for the citation customization
+   
+   I don't like using long variable names but don't want
+   to figure out what is in the namespace */
+div.specialfooter {
+    height:25px;
+    background-color: #E3EFF1;
+    color: #86989B;
+    padding: 3px 8px 3px 8px;
+    clear: both;
+    font-size: 0.8em;
+}
+div.specialfooter a {
+    color: #86989B;
+    text-decoration: underline;
+}
+div.specialfooterleft {
+    float:left;
+    width:60%
+    padding-left:15px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:left;
+}
+div.specialfooterright {
+    float:right;
+    width:40%
+    padding-right:13px;
+    padding-bottom:6px;
+    white-space:nowrap;
+    text-align:right;
+}
+table.docutils {
+    width:100%
+}
+
+table.citation td.label{
+    width:150px;
+}
+
+</style>
+
+  </head>
+  <body>
+<div style="background-color: white; text-align: center; padding: 10px 10px 15px 15px; ">
+<img src="_static/sdt_metrics_logo.png" alt="sdt-metrics logo" />
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.htm" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mult_roc_plot.htm" title="mult_roc_plot"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="poc_plot.htm" title="poc_plot"
+             accesskey="P">previous</a> |</li>
+        <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
+        <li><a href="index.htm">Documentation</a>
+          &raquo;</li>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.htm">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">roc_plot</a><ul>
+<li><a class="reference internal" href="#producing-plot-from-probabilities">Producing plot from probabilities</a></li>
+<li><a class="reference internal" href="#producing-plot-from-frequencies">Producing plot from frequencies</a></li>
+<li><a class="reference internal" href="#producing-plot-from-sdt-object">Producing plot from <tt class="docutils literal"><span class="pre">SDT</span></tt> Object</a></li>
+<li><a class="reference internal" href="#specifiying-bias-isopleths-contours">Specifiying Bias Isopleths (Contours)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="poc_plot.htm"
+                        title="previous chapter">poc_plot</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mult_roc_plot.htm"
+                        title="next chapter">mult_roc_plot</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/roc_plot.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.htm" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="roc-plot">
+<h1>roc_plot<a class="headerlink" href="#roc-plot" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="sdt_metrics.plotting.roc_plot">
+<tt class="descclassname">sdt_metrics.plotting.</tt><tt class="descname">roc_plot</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#sdt_metrics.plotting.roc_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receiver Operating Characteristic (ROC) Plot</p>
+<dl class="docutils">
+<dt>args:</dt>
+<dd><dl class="first last docutils">
+<dt>1 argument:</dt>
+<dd>sdt_metrics.SDT object</dd>
+<dt>2 arguments:</dt>
+<dd>pHI
+pFA</dd>
+<dt>4 arguments:</dt>
+<dd>hit count
+miss count
+correction rejection count
+false alarm count</dd>
+</dl>
+</dd>
+<dt>kwds:</dt>
+<dd><p class="first">metric: dprime, aprime, amzs (default is dprime)</p>
+<p>isopleths: None, beta, c, bppd, bmz</p>
+<p>fname: outputname</p>
+<p class="last">dpi: resolution of plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="producing-plot-from-probabilities">
+<h2>Producing plot from probabilities<a class="headerlink" href="#producing-plot-from-probabilities" title="Permalink to this headline">¶</a></h2>
+<p>ROC plots can be generated from dprime, aprime, or amzs</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdt_metrics.plotting</span> <span class="kn">import</span> <span class="n">roc_plot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="o">.</span><span class="mi">67</span><span class="p">,</span> <span class="o">.</span><span class="mi">43</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s">&#39;amzs&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;roc_example01.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="roc_example01.png" class="align-center" src="_images/roc_example01.png" style="width: 600px; height: 600px;" />
+</div>
+<div class="section" id="producing-plot-from-frequencies">
+<h2>Producing plot from frequencies<a class="headerlink" href="#producing-plot-from-frequencies" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="mi">116</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>
+<span class="go">             metric=&#39;aprime&#39;,</span>
+<span class="go">             fname=&#39;roc_example02.png&#39;)</span>
+</pre></div>
+</div>
+<img alt="roc_example02.png" class="align-center" src="_images/roc_example02.png" style="width: 600px; height: 600px;" />
+</div>
+<div class="section" id="producing-plot-from-sdt-object">
+<h2>Producing plot from <tt class="xref py py-class docutils literal"><span class="pre">SDT</span></tt> Object<a class="headerlink" href="#producing-plot-from-sdt-object" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdt_metrics</span> <span class="kn">import</span> <span class="n">HI</span><span class="p">,</span><span class="n">MI</span><span class="p">,</span><span class="n">CR</span><span class="p">,</span><span class="n">FA</span><span class="p">,</span> <span class="n">SDT</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdt_obj</span> <span class="o">=</span> <span class="n">SDT</span><span class="p">([</span><span class="n">choice</span><span class="p">([</span><span class="n">HI</span><span class="p">,</span><span class="n">MI</span><span class="p">,</span><span class="n">CR</span><span class="p">,</span><span class="n">FA</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1000</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">sdt_obj</span><span class="p">)</span>
+<span class="go">SDT(HI=251, MI=245, CR=264, FA=240)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="n">sdt_obj</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;roc_example03.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="roc_example03.png" class="align-center" src="_images/roc_example03.png" style="width: 600px; height: 600px;" />
+</div>
+<div class="section" id="specifiying-bias-isopleths-contours">
+<h2>Specifiying Bias Isopleths (Contours)<a class="headerlink" href="#specifiying-bias-isopleths-contours" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>isopleths</cite> keyword allows specifying isopleths for either
+<cite>beta</cite>, <cite>c</cite>, <cite>bppd</cite>, or <cite>bmz</cite>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">roc_plot</span><span class="p">(</span><span class="mi">116</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>
+<span class="go">             metric=&#39;dprime&#39;,</span>
+<span class="go">             isopleths=&#39;beta&#39;,</span>
+<span class="go">             fname=&#39;roc_example04.png&#39;)</span>
+</pre></div>
+</div>
+<img alt="roc_example04.png" class="align-center" src="_images/roc_example04.png" style="width: 600px; height: 600px;" />
+<p>The values inside the brackets specify [<cite>start</cite> : <cite>stop</cite> : <cite>step</cite>]. On
+The figure the thinner lines denot larger values (going up hill). This
+is a little counterintuitive but the uphill gradients tend to be steeper
+and having thinner lines makes the plots look better.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.htm" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mult_roc_plot.htm" title="mult_roc_plot"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="poc_plot.htm" title="poc_plot"
+             >previous</a> |</li>
+        <li><a href="http://code.google.com/p/sdt-metrics/">sdt_metrics home</a>&nbsp;|&nbsp;</li>
+        <li><a href="index.htm">Documentation</a>
+          &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Roger Lew.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -443,12 +443,12 @@ var Search = {
           }
           listItem.append($('<a/>').attr('href',
             DOCUMENTATION_OPTIONS.URL_ROOT + dirname +
-            highlightstring + item[2]).html(item[1]));
+            highlightstring + item[2]).htm(item[1]));
         } else {
           // normal html builders
           listItem.append($('<a/>').attr('href',
             item[0] + DOCUMENTATION_OPTIONS.FILE_SUFFIX +
-            highlightstring + item[2]).html(item[1]));
+            highlightstring + item[2]).htm(item[1]));
         }
         if (item[3]) {
           listItem.append($('<span> (' + item[3] + ')</span>'));

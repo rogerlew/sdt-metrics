@@ -191,7 +191,7 @@
          .data('source', data.source);
 
        if (data.comments.length === 0) {
-         ul.html('<li>No comments yet.</li>');
+         ul.htm('<li>No comments yet.</li>');
          ul.data('empty', true);
        } else {
          // If there are comments, sort them and put them in the list.
@@ -275,7 +275,7 @@
   function appendComments(comments, ul) {
     $.each(comments, function() {
       var div = createCommentDiv(this);
-      ul.append($(document.createElement('li')).html(div));
+      ul.append($(document.createElement('li')).htm(div));
       appendComments(this.children, div.find('ul.comment-children'));
       // To avoid stagnating data, don't store the comments children in data.
       this.children = null;
@@ -305,7 +305,7 @@
       if (comp(comment, siblings[i]) <= 0) {
         $('#cd' + siblings[i].id)
           .parent()
-          .before(li.html(div));
+          .before(li.htm(div));
         li.slideDown('fast');
         return;
       }
@@ -313,7 +313,7 @@
 
     // If we get here, this comment rates lower than all the others,
     // or it is the only comment in the list.
-    ul.append(li.html(div));
+    ul.append(li.htm(div));
     li.slideDown('fast');
   }
 
@@ -598,7 +598,7 @@
       $.each(ph.split('.'), function() {
         cur = cur[this];
       });
-      return escape ? esc.text(cur || "").html() : cur;
+      return escape ? esc.text(cur || "").htm() : cur;
     }
 
     return template.replace(/<([%#])([\w\.]*)\1>/g, function() {
