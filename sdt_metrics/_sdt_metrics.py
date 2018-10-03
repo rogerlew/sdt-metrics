@@ -17,7 +17,7 @@ import math
 
 from sdt_metrics.support.singletonmixin import Singleton
 
-HI,MI,CR,FA = TP,FP,TN,FN = 'HI','MI','CR','FA'
+HI,MI,CR,FA = TP,TN,FN,FP = 'HI','MI','CR','FA'
 
 """
 Acknowledgements
