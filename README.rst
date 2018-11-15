@@ -2,6 +2,9 @@
   sdt_metrics - Signal Detection Theory metrics for Python
 ==================================================================
 
+See Documentation here:
+https://rogerlew.github.io/sdt-metrics/
+
 :Authors: Roger Lew
 :email:   rogerlew@gmail.com
 
