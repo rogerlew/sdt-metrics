@@ -12,12 +12,12 @@ elif sys.version_info[0] == 3:
     _strobj = str
     _xrange = range
     
-from _abcoll import Mapping
+#from _abcoll import Mapping
 import math
 
 from sdt_metrics.support.singletonmixin import Singleton
 
-HI,MI,CR,FA = TP,TN,FN,FP = 'HI','MI','CR','FA'
+HI,MI,CR,FA = TP,FP,TN,FN = 'HI','MI','CR','FA'
 
 """
 Acknowledgements
@@ -379,7 +379,8 @@ class SDT(dict):
         if iterable is not None:
             if hasattr(iterable, '__getitem__'):
                 if hasattr(iterable, 'keys'):
-                    for elem, count in iterable.iteritems():
+                    # for elem, count in iterable.iteritems():
+                    for elem, count in iterable.items():
                         if elem not in self.keys():
                             raise KeyError(elem)
                         
@@ -402,7 +403,7 @@ class SDT(dict):
             self.update(kwds)
             
         for elem in self:
-            if not self.has_key(elem):
+            if elem not in self.keys():
                 self[elem] = 0
 
     def __setitem__(self, key, value):
@@ -423,7 +424,7 @@ class SDT(dict):
         if iterable is not None:
             if hasattr(iterable, '__getitem__'):
                 if hasattr(iterable, 'keys'):
-                    for elem, count in iterable.iteritems():
+                    for elem, count in iterable.items():
                         if elem not in self.keys():
                             raise KeyError(elem)
                         
