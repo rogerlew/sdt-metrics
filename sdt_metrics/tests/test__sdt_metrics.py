@@ -230,7 +230,7 @@ class TestSDT__and__(unittest.TestCase):
 
 class TestSDT_items(unittest.TestCase):
     def test0(self):
-        self.assertEqual(SDT().items(), zip([HI,MI,CR,FA],[0,0,0,0]))
+        self.assertEqual(SDT().items(), list(zip([HI,MI,CR,FA],[0,0,0,0])))
         
 class TestSDT_keys(unittest.TestCase):
     def test0(self):
